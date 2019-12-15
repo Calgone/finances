@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-4">
+                    <h1>{{ bien.titre }}</h1>
+                    {{ bien.cp }} {{ bien.ville }}
+                    <div class="text-primary" style="font-size: 3rem; font-weight: bold;">
+                        {{ bien.prixFAIFormat }}
+                    </div>
+                    <a href="#" class="btn btn-primary">Contacter l'agence</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+
+        <p>
+            {{ bien.description | nl2br }}
+        </p>
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Caractéristiques</h2>
+                <table class="table table-stripped">
+                    <tr>
+                        <td>Surface</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Pièces</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h2>Spécificités</h2>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

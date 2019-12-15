@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ImmoController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <div class="container">
+        <h2>Les derniers biens</h2>
+        <div class="row flex">
+            {% for bien in biens %}
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                <a href="{{ path('bien.show', {id: bien.id, slug: bien.slug}) }}">{{ bien.ville }}</a>
+                            </h5>
+                            <p class="card-text">{{ bien.cp }} - {{ bien.ville }}</p>
+                            <div style="font-weight: bold; font-size: 1.2em;"
+                                 class="text-primary">{{ bien.prixFAIFormat }} €</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

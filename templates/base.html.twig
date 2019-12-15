@@ -3,10 +3,37 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {# 'app' must match the first argument to addEntry() in webpack.config.js #}
+            {{ encore_entry_link_tags('app') }}
+
+            <!-- Renders a link tag (if your module requires any CSS)
+                 <link rel="stylesheet" href="/build/app.css"> -->
+        {% endblock %}
     </head>
     <body>
+        {{ include('navbar.html.twig') }}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block footer %}
+            <footer class="app-footer fixed-bottom">
+                <div class="container">
+                    <!--Copyright-->
+                    <div>
+                        <div class="container-fluid text-center">
+                            Copyright &copy; {{ "now"|date("Y") }} <a
+                                    href="http://www.gregorylecubin.fr/" target="_blank"><b>Grégory Lecubin
+                                    Info.</b></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+
+            <!-- Renders app.js & a webpack runtime.js file
+                <script src="/build/runtime.js"></script>
+                <script src="/build/app.js"></script> -->
+        {% endblock %}
     </body>
 </html>
