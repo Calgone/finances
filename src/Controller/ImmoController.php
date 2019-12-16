@@ -36,7 +36,7 @@ class ImmoController extends AbstractController
     }
 
     /**
-     * @Route("/immo/bien/new", name="bien-new")
+     * @Route("/immo/bien/new", name="bien.new")
      * @return Response
      */
     public function newBien()
@@ -76,7 +76,7 @@ class ImmoController extends AbstractController
     }
 
     /**
-     * @Route("immo/bien/update/{id}", name="bien-update")
+     * @Route("/immo/bien/update/{id}", name="bien.update")
      */
     public function updateBien(Bien $bien)
     {

@@ -13,6 +13,10 @@ class Lot
         0 => 'Électrique',
         1 => 'Gaz',
         2 => 'Convecteur',
+        3 => 'Charbon',
+        4 => 'Bois',
+        5 => 'Solaire',
+        6 => 'Pétrole'
     ];
 
     /**
@@ -50,7 +54,7 @@ class Lot
         return $this->id;
     }
 
-    public function getSurface(): ?int
+    public function &getSurface(): ?int
     {
         return $this->surface;
     }

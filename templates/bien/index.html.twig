@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BienController!{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container mt-4">
+
+        <h1>Gérer les biens</h1>
+
+        <table class="table table-stripped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for bien in biens %}
+                <tr>
+                    <td>{{ bien.titre }}</td>
+                    <td>
+                        <a href="{{ path('bien.edit', {id: bien.id}) }}" class="btn btn-secondary">Éditer</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}

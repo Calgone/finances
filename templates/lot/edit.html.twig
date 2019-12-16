@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Éditer le lot</h2>
+        {{ form_start(form) }}
+{#        <div class="row">#}
+{#            <div class="col-md-12">#}
+{#                {{ form_row(form.titre) }}#}
+{#            </div>#}
+
+{#        </div>#}
+{#        <div class="row">#}
+{#            <div class="col-md-12">#}
+{#                {{  form_row(form.description) }}#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="row">#}
+{#            <div class="col-md-4">{{ form_row(form.cp) }}</div>#}
+{#            <div class="col-md-4">{{ form_row(form.adresse) }}</div>#}
+{#            <div class="col-md-4">{{ form_row(form.ville) }}</div>#}
+{#        </div>#}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Valider</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
