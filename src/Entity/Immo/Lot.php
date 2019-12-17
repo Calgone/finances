@@ -3,6 +3,8 @@
 namespace App\Entity\Immo;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Immo\LotRepository")
@@ -28,6 +30,7 @@ class Lot
 
     /**
      * @ORM\Column(type="smallint")
+     * @Assert\Range(min=10, max=400)
      */
     private $surface;
 

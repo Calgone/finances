@@ -5,17 +5,21 @@ namespace App\Controller;
 use App\Entity\Immo\Bien;
 use App\Form\BienType;
 use App\Repository\Immo\BienRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class BienController extends AbstractController
 {
     private $bienRepo;
+    private $em;
 
-    public function __construct(BienRepository $bienRepo)
+    public function __construct(BienRepository $bienRepo, EntityManagerInterface $em)
     {
         $this->bienRepo = $bienRepo;
+        $this->em       = $em;
     }
 
     /**
@@ -32,15 +36,62 @@ class BienController extends AbstractController
     }
 
     /**
-     * @Route("/bien/{id}", name="bien.edit", requirements={"id"="\d+"})
+     * @Route("/bien/new", name="bien.new")
+     * @param Request $request
      * @return Response
      */
-    public function edit(Bien $bien)
+    public function new(Request $request)
+    {
+        $bien = new Bien();
+        $form = $this->createForm(BienType::class, $bien);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($bien);
+            $this->em->flush();
+            $this->addFlash('success','Le bien est créé');
+        }
+        return $this->render('bien/new.html.twig', [
+            'bien' => $bien,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/bien/{id}", name="bien.edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @param Bien $bien
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Bien $bien, Request $request)
     {
         $form = $this->createForm(BienType::class, $bien);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->flush();
+            $this->addFlash('success','Le bien est sauvegardé');
+            return $this->redirectToRoute('bien.index');
+        }
         return $this->render('bien/edit.html.twig', [
             'bien' => $bien,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/bien/{id}", name="bien.delete", methods="DELETE", requirements={"id"="\d+"})
+     * @param Bien $bien
+     * @return Response
+     */
+    public function delete(Bien $bien, Request $request)
+    {
+        if ($this->isCsrfTokenValid('delete' . $bien->getId(), $request->get('_token'))) {
+            $this->em->remove($bien);
+            $this->em->flush();
+            $this->addFlash('success','Le bien est supprimé');
+            return $this->redirectToRoute('immo.index');
+        } else {
+            return $this->redirectToRoute('bien.edit', ['id' => $bien->getId()]);
+        }
     }
 }

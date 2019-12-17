@@ -14,6 +14,16 @@
                         {{ bien.prixFAIFormat }}
                     </div>
                     <a href="#" class="btn btn-primary">Contacter l'agence</a>
+                    <br>
+                    <a href="{{ path('bien.edit', {id: bien.id}) }}" class="btn btn-secondary">Éditer</a>
+
+                    <form method="post" action="{{ path('bien.delete', {id: bien.id}) }}">
+                        <input  type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ bien.id ) }}">
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Êtes vous sûr de vouloir supprimer ce bien ?')">
+                            Supprimer</button>
+                    </form>
                 </div>
 
             </div>

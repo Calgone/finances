@@ -40,7 +40,8 @@ class Bien
      * @ORM\Column(type="string", length=5)
      * @Groups({"list", "show"})
      * @Assert\NotBlank()
-     * @Assert\Length(min="5", minMessage="La valeur minimum autorisée est {{ limit }}", max="5", maxMessage="La valeur maximum autorisée est {{ limit }}")
+     * @Assert\Length(min=5, max=5)
+     * @Assert\Regex("/^[0-9]{5}$/")
      */
     private $cp;
 
@@ -77,6 +78,7 @@ class Bien
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
+     * @Assert\Range(min=18, max=100)
      */
     private $proprio_age;
 
@@ -112,6 +114,7 @@ class Bien
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Length(min=5, max=100)
      */
     private $titre;
 

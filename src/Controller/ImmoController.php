@@ -23,7 +23,7 @@ class ImmoController extends AbstractController
     }
 
     /**
-     * @Route("/immo", name="immo")
+     * @Route("/immo", name="immo.index")
      */
     public function index()
     {
@@ -35,25 +35,25 @@ class ImmoController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/immo/bien/new", name="bien.new")
-     * @return Response
-     */
-    public function newBien()
-    {
-        $bien = new Bien();
-        $bien->setAdresse('Rue des prés')
-            ->setVille('Aire sur la Lys')
-            ->setCp('62120');
-//        $em = $this->getDoctrine()->getManager();
-
-        $this->em->persist($bien);
-        $this->flush();
-
-        return $this->render('immo/bien.html.twig', [
-            'bien' => $bien,
-        ]);
-    }
+//    /**
+//     * @Route("/immo/bien/new", name="bien.new")
+//     * @return Response
+//     */
+//    public function newBien()
+//    {
+//        $bien = new Bien();
+//        $bien->setAdresse('Rue des prés')
+//            ->setVille('Aire sur la Lys')
+//            ->setCp('62120');
+////        $em = $this->getDoctrine()->getManager();
+//
+//        $this->em->persist($bien);
+//        $this->em->flush();
+//
+//        return $this->render('immo/bien.html.twig', [
+//            'bien' => $bien,
+//        ]);
+//    }
 
     /**
      * @Route("/immo/bien/{slug}-{id}", name="bien.show", requirements={"slug": "[a-z0-9\-]*"})
