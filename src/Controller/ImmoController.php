@@ -60,6 +60,9 @@ class ImmoController extends AbstractController
      */
     public function showBien(Bien $bien, string $slug): Response
     {
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        // or add an optional message - seen by developers
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
         if ($bien->getSlug() !== $slug) {
             return $this->redirectToRoute('bien.show', [
                 'id' => $bien->getId(),

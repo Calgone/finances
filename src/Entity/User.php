@@ -53,6 +53,14 @@ class User implements UserInterface
      */
     private $birth_date;
 
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
