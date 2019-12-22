@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .tableFixHead {
+            overflow-y: auto;
+            height: 600px;
+        }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px 16px;
+        }
+
+        th {
+            background: #eee;
+        }
+    </style>
+    {#    {{ dump(periodes) }}#}
+    <div class="container">
+        <div class="row">
+            <h2>Tableau d'amortissement</h2>
+        </div>
+        <div class="tableFixHead mt-4">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date paiement</th>
+                    <th>Solde ouverture</th>
+                    <th>Intérêts</th>
+                    <th>Principal</th>
+                    <th>Assurance</th>
+                    <th>Total paiements</th>
+                    <th>Solde cloture</th>
+                    <th>Mensualités restantes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for mois in periodes %}
+                    {#            <tr>#}
+                    {% for m in mois %}
+                        <tr>
+                            <td>{{ m.numero }}</td>
+                            <td>{{ m.date_paiement|date("d/m/Y") }}</td>
+                            <td>{{ m.solde_ouverture|format_currency('EUR') }}</td>
+                            <td>{{ m.interet|format_currency('EUR') }}</td>
+                            <td>{{ m.principal|format_currency('EUR') }}</td>
+                            <td>{{ m.assurance|format_currency('EUR') }}</td>
+                            <td>{{ m.mensualite|format_currency('EUR') }}</td>
+                            <td>{{ m.solde_cloture|format_currency('EUR') }}</td>
+                            <td>{{ m.nb_mois_restant }}</td>
+                        </tr>
+                    {% endfor %}
+                    {#            </tr>#}
+                    {#            {{ dump(periode) }}#}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
