@@ -7,6 +7,7 @@ use App\Form\LotType;
 use App\Repository\Immo\LotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +38,8 @@ class LotController extends AbstractController
 
     /**
      * @Route("/bien/log/new", name="lot.new")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function new(Request $request)
     {

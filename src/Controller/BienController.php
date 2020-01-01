@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class BienController
+ * @package App\Controller
+ * @Route("/immo")
+ */
 class BienController extends AbstractController
 {
     private $bienRepo;
@@ -32,7 +37,7 @@ class BienController extends AbstractController
     {
         $biens = $this->bienRepo->findAll();
 
-        return $this->render('bien/index.html.twig', compact('biens'));
+        return $this->render('immo/bien/index.html.twig', compact('biens'));
     }
 
     /**
@@ -51,7 +56,7 @@ class BienController extends AbstractController
             $this->em->flush();
             $this->addFlash('success','Le bien est créé');
         }
-        return $this->render('bien/new.html.twig', [
+        return $this->render('immo/bien/new.html.twig', [
             'bien' => $bien,
             'form' => $form->createView()
         ]);
@@ -72,7 +77,7 @@ class BienController extends AbstractController
             $this->addFlash('success','Le bien est sauvegardé');
             return $this->redirectToRoute('bien.index');
         }
-        return $this->render('bien/edit.html.twig', [
+        return $this->render('immo/bien/edit.html.twig', [
             'bien' => $bien,
             'form' => $form->createView()
         ]);
@@ -81,6 +86,7 @@ class BienController extends AbstractController
     /**
      * @Route("/bien/{id}", name="bien.delete", methods="DELETE", requirements={"id"="\d+"})
      * @param Bien $bien
+     * @param Request $request
      * @return Response
      */
     public function delete(Bien $bien, Request $request)

@@ -111,9 +111,25 @@ class Projet
      */
     private $cout_autre;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Immo\Bien")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $bien;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
     }
 
     public function getNetVendeur(): ?string
@@ -340,6 +356,30 @@ class Projet
     public function setCoutAutre(string $cout_autre): self
     {
         $this->cout_autre = $cout_autre;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getBien(): ?Bien
+    {
+        return $this->bien;
+    }
+
+    public function setBien(?Bien $bien): self
+    {
+        $this->bien = $bien;
 
         return $this;
     }

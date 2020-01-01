@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Éditer le projet</h2>
+        {{ include('immo/projet/_form.html.twig', {form: form, button: 'Éditer'}) }}
+
+    </div>
+{% endblock %}

@@ -14,7 +14,7 @@ use Cocur\Slugify\Slugify;
  */
 class Bien
 {
-    const BIEN_TYPE = [
+    const TYPE = [
         1 => 'Immeuble',
         2 => 'Maison',
         3 => 'Appartement'
@@ -27,6 +27,13 @@ class Bien
      * @Groups({"list", "show"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Groups({"show"})
+     * @Assert\NotNull()
+     */
+    private $bienType;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -138,6 +145,29 @@ class Bien
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->adresse);
+    }
+
+    /**
+     * @return int
+     */
+    public function getBienType(): int
+    {
+        return $this->bienType;
+    }
+
+    /**
+     * @param int $bienType
+     * @return Bien
+     */
+    public function setBienType(int $bienType)
+    {
+        $this->bienType = $bienType;
+        return $this;
+    }
+
+    public function getType()
+    {
+        return self::TYPE[$this->getBienType()];
     }
 
     public function getAdresse(): ?string

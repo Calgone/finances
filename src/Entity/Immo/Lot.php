@@ -21,6 +21,12 @@ class Lot
         6 => 'Pétrole'
     ];
 
+    const TYPE = [
+        0 => 'studio',
+        1 => 'appartement',
+        2 => 'maison',
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -35,10 +41,10 @@ class Lot
     private $surface;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Immo\LotType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="smallint")
+     * @Assert\NotNull()
      */
-    private $type;
+    private $lotType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Immo\Bien", inversedBy="lots")
@@ -69,16 +75,21 @@ class Lot
         return $this;
     }
 
-    public function getType(): ?LotType
+    public function getLotType(): ?int
     {
-        return $this->type;
+        return $this->lotType;
     }
 
-    public function setType(?LotType $type): self
+    public function setLotType(int $lotType): self
     {
-        $this->type = $type;
+        $this->lotType = $lotType;
 
         return $this;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE[$this->getLotType()];
     }
 
     public function getBien(): ?Bien
@@ -104,4 +115,8 @@ class Lot
         return $this;
     }
 
+    public function getChauffage(): string
+    {
+        return self::CHAUFFAGE[$this->getChauffageType()];
+    }
 }

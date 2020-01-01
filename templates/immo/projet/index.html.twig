@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="container mt-4">
+
+        <h1>Gérer les projets</h1>
+        <table class="table table-stripped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for projet in projets %}
+                <tr>
+                    <td>{{ projet.createdAt()|date("d/m/Y") }}</td>
+                    <td>
+                        <a href="{{ path('projet.edit', {id: projet.id}) }}" class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('projet.delete', {id: projet.id}) }}" style="display: inline-block;">
+                            <input  type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ projet.id ) }}">
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Êtes vous sûr de vouloir supprimer ce projet ?')">
+                                Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <div class="text-right">
+            <a href="{{ path('bien.new') }}" class="btn btn-secondary">Nouveau bien</a>
+        </div>
+    </div>
+{% endblock %}
