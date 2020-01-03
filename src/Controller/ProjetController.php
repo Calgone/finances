@@ -91,4 +91,15 @@ class ProjetController extends AbstractController
     {
 
     }
+
+    /**
+     * @Route("/projet/{id}/detail", name="projet.detail")
+     */
+    public function detail(Projet $projet)
+    {
+        dump($projet);
+        return $this->render('immo/projet/detail.html.twig', [
+            'projet' => $projet
+        ]);
+    }
 }

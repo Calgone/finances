@@ -41,6 +41,31 @@ class BienController extends AbstractController
     }
 
     /**
+     * @Route("/bien/{id}/detail", name="bien.show")
+     * @param Bien $bien
+     * @return Response
+     */
+    public function show(Bien $bien): Response
+    {
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        // or add an optional message - seen by developers
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+//        if ($bien->getSlug() !== $slug) {
+//            return $this->redirectToRoute('bien.show', [
+//                'id' => $bien->getId(),
+//                'slug' => $bien->getSlug()
+//            ], 301);
+//        }
+//        $repo = $this->getDoctrine()->getRepository(Bien::class);
+//        dump($this->bienRepo);
+//        $bien = $this->bienRepo->findAll();
+//        dump($bien);
+        return $this->render('immo/bien.html.twig', [
+            'bien' => $bien,
+        ]);
+    }
+
+    /**
      * @Route("/bien/new", name="bien.new")
      * @param Request $request
      * @return Response

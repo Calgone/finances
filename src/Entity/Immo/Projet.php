@@ -52,14 +52,19 @@ class Projet
     private $credit_frais_dossier;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $tx_emprunt;
+    private $credit_garantie;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      */
-    private $tx_emprunt_ass;
+    private $credit_taux;
+
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     */
+    private $credit_taux_ass;
 
     /**
      * @ORM\Column(type="smallint")
@@ -204,38 +209,50 @@ class Projet
         return $this;
     }
 
-    public function getCreditFraisDossier(): ?string
+    public function getCreditFraisDossier(): ?float
     {
         return $this->credit_frais_dossier;
     }
 
-    public function setCreditFraisDossier(string $credit_frais_dossier): self
+    public function setCreditFraisDossier(float $credit_frais_dossier): self
     {
         $this->credit_frais_dossier = $credit_frais_dossier;
 
         return $this;
     }
 
-    public function getTxEmprunt(): ?string
+    public function getCreditGarantie(): ?float
     {
-        return $this->tx_emprunt;
+        return $this->credit_garantie;
     }
 
-    public function setTxEmprunt(string $tx_emprunt): self
+    public function setCreditGarantie(float $credit_garantie): self
     {
-        $this->tx_emprunt = $tx_emprunt;
+        $this->credit_garantie = $credit_garantie;
 
         return $this;
     }
 
-    public function getTxEmpruntAss(): ?string
+    public function getCreditTaux(): ?float
     {
-        return $this->tx_emprunt_ass;
+        return $this->credit_taux;
     }
 
-    public function setTxEmpruntAss(string $tx_emprunt_ass): self
+    public function setCreditTaux(float $credit_taux): self
     {
-        $this->tx_emprunt_ass = $tx_emprunt_ass;
+        $this->credit_taux = $credit_taux;
+
+        return $this;
+    }
+
+    public function getCreditTauxAss(): ?float
+    {
+        return $this->credit_taux_ass;
+    }
+
+    public function setCreditTauxAss(float $credit_taux_ass): self
+    {
+        $this->credit_taux_ass = $credit_taux_ass;
 
         return $this;
     }

@@ -29,8 +29,9 @@ class ProjetFixtures extends Fixture
                 ->setMeubles(random_int(0,5000))
                 ->setApport(random_int(0, $netVendeur * 0.15))
                 ->setCreditFraisDossier(random_int(1000,2000))
-                ->setTxEmprunt(random_int(10, 20)  / 10)
-                ->setTxEmpruntAss(0.36)
+                ->setCreditGarantie(random_int(0, $netVendeur * 0.02))
+                ->setCreditTaux(random_int(10, 20)  / 10)
+                ->setCreditTauxAss(0.36)
                 ->setCreditDureeMois(240)
                 ->setCreditDateDebut(new \DateTime('first day of next month'))
                 ->setLoyerCibleHc($netVendeur / 12 / 100)
@@ -67,7 +68,7 @@ class ProjetFixtures extends Fixture
                 $lot->setBien($bien)
                     ->setChauffageType(random_int(0,6))
                     ->setSurface(random_int(20,150))
-                    ->setLotType(random_int(1,count($lot::TYPE)));
+                    ->setLotType(random_int(0, count($lot::TYPE) - 1));
                 $manager->persist($lot);
             }
     }

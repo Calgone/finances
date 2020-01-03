@@ -25,6 +25,7 @@ class Lot
         0 => 'studio',
         1 => 'appartement',
         2 => 'maison',
+        3 => 'garage'
     ];
 
     /**

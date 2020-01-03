@@ -22,6 +22,7 @@
                 <tr>
                     <td>{{ projet.createdAt()|date("d/m/Y") }}</td>
                     <td>
+                        <a href="{{ path('projet.detail', {id: projet.id}) }}" class="btn btn-link">Détail</a>
                         <a href="{{ path('projet.edit', {id: projet.id}) }}" class="btn btn-secondary">Éditer</a>
                         <form method="post" action="{{ path('projet.delete', {id: projet.id}) }}" style="display: inline-block;">
                             <input  type="hidden" name="_method" value="DELETE">

@@ -36,47 +36,20 @@ class ImmoController extends AbstractController
     }
 
 //    /**
-//     * @Route("/immo/bien/new", name="bien.new")
-//     * @return Response
+//     * @Route("/immo/bien/{slug}-{id}", name="bien.show", requirements={"slug": "[a-z0-9\-]*"})
 //     */
-//    public function newBien()
+//    public function showBien(Bien $bien, string $slug): Response
 //    {
-//        $bien = new Bien();
-//        $bien->setAdresse('Rue des prés')
-//            ->setVille('Aire sur la Lys')
-//            ->setCp('62120');
-////        $em = $this->getDoctrine()->getManager();
-//
-//        $this->em->persist($bien);
-//        $this->em->flush();
-//
+//        if ($bien->getSlug() !== $slug) {
+//            return $this->redirectToRoute('bien.show', [
+//                'id' => $bien->getId(),
+//                'slug' => $bien->getSlug()
+//            ], 301);
+//        }
 //        return $this->render('immo/bien.html.twig', [
 //            'bien' => $bien,
 //        ]);
 //    }
-
-    /**
-     * @Route("/immo/bien/{slug}-{id}", name="bien.show", requirements={"slug": "[a-z0-9\-]*"})
-     */
-    public function showBien(Bien $bien, string $slug): Response
-    {
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        // or add an optional message - seen by developers
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
-        if ($bien->getSlug() !== $slug) {
-            return $this->redirectToRoute('bien.show', [
-                'id' => $bien->getId(),
-                'slug' => $bien->getSlug()
-            ], 301);
-        }
-//        $repo = $this->getDoctrine()->getRepository(Bien::class);
-//        dump($this->bienRepo);
-//        $bien = $this->bienRepo->findAll();
-//        dump($bien);
-        return $this->render('immo/bien.html.twig', [
-            'bien' => $bien,
-        ]);
-    }
 
     /**
      * @Route("/immo/bien/update/{id}", name="bien.update")

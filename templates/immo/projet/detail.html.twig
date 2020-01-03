@@ -2,3 +2,85 @@
 
 
 {% block title %}Détail du projet{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        <h2>Détail du projet {{ projet.id }}</h2>
+        Créé le {{ projet.createdAt | format_date() }}
+        <h3>
+            Le bien <a href="{{ path('bien.show', {'id': projet.bien.id}) }}">
+                <i class="fas fa-search"></i>
+            </a>
+        </h3>
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Ville</th>
+                        <td>{{ projet.bien.ville }} {{ projet.bien.adresse }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix net vendeur</th>
+                        <td>{{ projet.bien.prixNetVendeur | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Frais d'agence</th>
+                        <td>{{ projet.bien.fraisAgence | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Frais de notaire</th>
+                        <td>{{ projet.bien.prixFAI | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Travaux à prévoir</th>
+                        <td>{{ projet.travaux | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Meubles à prévoir</th>
+                        <td>{{ projet.meubles | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Crédit garantie</th>
+                        <td>{{ projet.creditGarantie | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Crédit frais dossier</th>
+                        <td>{{ projet.creditFraisDossier | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Autres frais</th>
+                        <td>TODO</td>
+                    </tr>
+
+
+                </table>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+        <div class="row">
+            <h3>Lots</h3>
+            <ul>
+                {% for lot in projet.bien.lots %}
+                    <li>{{ lot.id }} - {{ lot.surface }} m² {{ lot.type }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
+            <h3>Acquisition</h3>
+            <table class="table table-sm">
+                <tr>
+                    <th>Offre net vendeur</th>
+                    <td>{{ projet.netVendeur | format_currency('EUR') }}</td>
+                </tr>
+                <tr>
+                    <th>Frais agence</th>
+                    <td>{{ projet.fraisAgence | format_currency('EUR') }}</td>
+                </tr>
+                <tr>
+                    <th>Frais notaire</th>
+                    <td>{{ projet.fraisNotaire | format_currency('EUR') }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
