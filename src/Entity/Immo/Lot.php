@@ -23,9 +23,13 @@ class Lot
 
     const TYPE = [
         0 => 'studio',
-        1 => 'appartement',
-        2 => 'maison',
-        3 => 'garage'
+        1 => 'T1',
+        2 => 'T2',
+        3 => 'T3',
+        4 => 'T4',
+        5 => 'maison',
+        6 => 'garage',
+        7 => 'local commercial'
     ];
 
     /**

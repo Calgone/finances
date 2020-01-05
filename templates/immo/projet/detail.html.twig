@@ -17,70 +17,241 @@
                 <table class="table table-sm">
                     <tr>
                         <th>Ville</th>
-                        <td>{{ projet.bien.ville }} {{ projet.bien.adresse }}</td>
+                        <td class="text-right">{{ projet.bien.ville }} {{ projet.bien.adresse }}</td>
                     </tr>
                     <tr>
                         <th>Prix net vendeur</th>
-                        <td>{{ projet.bien.prixNetVendeur | format_currency('EUR') }}</td>
+                        <td id="js-prix-net-vendeur" data-prix-net-vendeur="{{ projet.bien.prixNetVendeur }}"
+                            class="text-right">
+                            {{ projet.bien.prixNetVendeur | format_currency('EUR') }}
+                        </td>
                     </tr>
                     <tr>
                         <th>Frais d'agence</th>
-                        <td>{{ projet.bien.fraisAgence | format_currency('EUR') }}</td>
+                        <td class="text-right">{{ projet.bien.fraisAgence | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Frais de notaire</th>
-                        <td>{{ projet.bien.prixFAI | format_currency('EUR') }}</td>
+                        <td class="text-right">{{ projet.bien.prixFAI | format_currency('EUR') }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>Lots</h3>
+                <ul>
+                    {% for lot in projet.bien.lots %}
+                        <li>{{ loop.index }} - {{ lot.type }} - {{ lot.surface }} m²</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Acquisition</h3>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Offre net vendeur</th>
+                        <td class="text-right">{{ projet.netVendeur | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Frais agence</th>
+                        <td class="text-right">{{ projet.fraisAgence | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Frais notaire</th>
+                        <td class="text-right">{{ projet.fraisNotaire | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Travaux à prévoir</th>
-                        <td>{{ projet.travaux | format_currency('EUR') }}</td>
+                        <td class="text-right">{{ projet.travaux | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Meubles à prévoir</th>
-                        <td>{{ projet.meubles | format_currency('EUR') }}</td>
+                        <td class="text-right">{{ projet.meubles | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Crédit garantie</th>
-                        <td>{{ projet.creditGarantie | format_currency('EUR') }}</td>
+                        <td id="js-credit-garantie" data-credit-garantie="{{ projet.creditFraisDossier }}"
+                            class="text-right">
+                            {{ projet.creditGarantie | format_currency('EUR') }}
+                        </td>
                     </tr>
                     <tr>
                         <th>Crédit frais dossier</th>
-                        <td>{{ projet.creditFraisDossier | format_currency('EUR') }}</td>
+                        <td id="js-credit-frais-dossier" data-credit-frais-dossier="{{ projet.creditFraisDossier }}"
+                            class="text-right">
+                            {{ projet.creditFraisDossier | format_currency('EUR') }}
+                        </td>
                     </tr>
                     <tr>
                         <th>Autres frais</th>
-                        <td>TODO</td>
+                        <td class="text-right">TODO</td>
                     </tr>
-
-
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3>Financement</h3>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Montant emprunté 110 %</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Taux d'intérêt du prêt</th>
+                        <td>{{ projet.creditTaux }} %</td>
+                    </tr>
+                    <tr>
+                        <th>Taux d'assurance</th>
+                        <td>{{ projet.creditTauxAss }} %</td>
+                    </tr>
+                    <tr>
+                        <th>Durée d'emprunt (années)</th>
+                        <td>{{ projet.creditDureeMois / 12 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de début du prêt</th>
+                        <td>{{ projet.creditDateDebut | format_date() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mensualité du prêt</th>
+                        <td>{{ mens | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Annualités</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Total des remboursements</th>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3>Exploitation</h3>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Loyer mensuel visé</th>
+                        <td id="js-loyer-cible-hc" data-loyer-cible-hc="{{ projet.loyerCibleHc }}"
+                            class="text-right">{{ projet.loyerCibleHc | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Loyer annuel</th>
+                        <td class="text-right">{{ (projet.loyerCibleHc * 12) | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Taxe foncière</th>
+                        <td class="text-right">{{ projet.taxeFonciere | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Charges non récupérables</th>
+                        <td class="text-right">{{ projet.chargesNonRecup | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Assurances</th>
+                        <td class="text-right">{{ projet.coutAssuranceBien | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Travaux / entretien</th>
+                        <td class="text-right">{{ projet.coutTravauxEntretiens | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Frais de comptable</th>
+                        <td class="text-right">{{ projet.coutComptable | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gestion locative</th>
+                        <td class="text-right">{{ projet.coutGestionLocative | format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Autres frais</th>
+                        <td class="text-right">{{ projet.coutAutre | format_currency('EUR') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <h3>Aide à la décision</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Montant à payer le jour de la signature</th>
+                        <td id="montant_jour_signature">__</td>
+                        <td>dossier + garantie</td>
+                    </tr>
+                    <tr>
+                        <th>Prix d'achat à viser</th>
+                        <td id="prix_achat_a_viser">__</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Delta avec le prix actuel FAI</th>
+                        <td id="delta_avec_prix_fai"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Taux de couverture des mensualités</th>
+                        <td id="taux_couverture_mensualites"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Loyer à obtenir pour 70% de taux de couverture</th>
+                        <td id="loyer_a_obtenir_pour_70pct_couverture"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Charges+intérêts+travaux/loyer</th>
+                        <td id="charges_interets_travaux_sur_loyer"></td>
+                        <td>Si > 30% passer aux frais réels</td>
+                    </tr>
+                    <tr>
+                        <th>Baisse de prix de départ net vendeur</th>
+                        <td id="baisse_prix_depart_net_vendeur"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Rendement brut hors frais achat</th>
+                        <td id="rendement_brut_hors_frais_achat"></td>
+                        <td>10 %</td>
+                    </tr>
+                    <tr>
+                        <th>Rendement brut yc frais notaire</th>
+                        <td id="rendement_brut_yc_frais_notaire"></td>
+                        <td>8 %</td>
+                    </tr>
+                    <tr>
+                        <th>Rendement brut yc frais achat</th>
+                        <td id="rendement_brut_yc_frais_achat"></td>
+                        <td>7 %</td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-8"></div>
         </div>
-        <div class="row">
-            <h3>Lots</h3>
-            <ul>
-                {% for lot in projet.bien.lots %}
-                    <li>{{ lot.id }} - {{ lot.surface }} m² {{ lot.type }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="row">
-            <h3>Acquisition</h3>
-            <table class="table table-sm">
-                <tr>
-                    <th>Offre net vendeur</th>
-                    <td>{{ projet.netVendeur | format_currency('EUR') }}</td>
-                </tr>
-                <tr>
-                    <th>Frais agence</th>
-                    <td>{{ projet.fraisAgence | format_currency('EUR') }}</td>
-                </tr>
-                <tr>
-                    <th>Frais notaire</th>
-                    <td>{{ projet.fraisNotaire | format_currency('EUR') }}</td>
-                </tr>
-            </table>
-        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const projet = JSON.parse('{{ projetJson|raw }}');
+        console.log('projet',projet);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // const creditFraisDossier = document.querySelector('#js-credit-frais-dossier');
+            // const creditGarantie = document.querySelector('#js-credit-garantie');
+            // console.log(creditFraisDossier, creditGarantie);
+            // const montantJourSignature = parseInt(creditFraisDossier.dataset.creditFraisDossier)
+            //     + parseInt(creditGarantie.dataset.creditGarantie);
+            const montantJourSignature = projet.creditFraisDossier + projet.creditGarantie;
+            byId('montant_jour_signature').textContent = formatter.format(montantJourSignature);
+            const prixAchatAViser = projet.loyerCibleHc * 12 * 10;
+            byId('prix_achat_a_viser').textContent = formatter.format(prixAchatAViser);
+        });
+        // $(function () {
+        //     let montantJourSignature = $('#js-credit-garantie').data('creditGarantie')
+        //         + $('#js-credit-frais-dossier').data('creditFraisDossier');
+        //     $('#montant_jour_signature').html(formatter.format(montantJourSignature));
+        // });
+    </script>
 {% endblock %}

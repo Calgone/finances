@@ -281,6 +281,15 @@ class Projet
         return $this;
     }
 
+    public function getCreditMontant(): ?int // TODO voir ce qu'on prend en compte dans le prêt
+    {
+        return $this->net_vendeur
+            + $this->frais_agence
+            + $this->frais_notaire
+            + $this->credit_garantie
+            + $this->credit_frais_dossier;
+    }
+
     public function getLoyerCibleHc(): ?string
     {
         return $this->loyer_cible_hc;

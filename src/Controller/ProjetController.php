@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Immo\Projet;
 use App\Form\ProjetType;
 use App\Repository\Immo\ProjetRepository;
+use App\Service\PretService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -97,9 +98,30 @@ class ProjetController extends AbstractController
      */
     public function detail(Projet $projet)
     {
-        dump($projet);
+        $serializer = $this->get('serializer');
+        $projetJson = $serializer->serialize($projet, 'json',
+            [
+                'circular_reference_handler' => function ($object) {
+                    return $object->getId();
+                }
+            ]);
+
+//        dump($projet);
+        // Infos du prêt
+        $mt_emprunt =
+        $pretSrv = (new PretService()) // TODO voir pour intégrer le service prêt dans le modèle projet
+            ->setNbMois($projet->getCreditDureeMois())
+            ->setMtEmprunt($projet->getCreditMontant())
+            ->setTxPret($projet->getCreditTaux() / 100)
+            ->setTxAss($projet->getCreditTauxAss() / 100)
+            ->setDeb($projet->getCreditDateDebut());
+//        $srv = new PretService();
+//        dump($srv->test());
+        $mens = $pretSrv->getMensualiteBase();
         return $this->render('immo/projet/detail.html.twig', [
-            'projet' => $projet
+            'projet' => $projet,
+            'projetJson' => $projetJson,
+            'mens' => $mens
         ]);
     }
 }
