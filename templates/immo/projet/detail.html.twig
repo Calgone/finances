@@ -91,39 +91,46 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <h3>Financement</h3>
+                <h3>Financement
+{#                    <a href="{{ path('bien.show', {'id': projet.bien.id}) }}">#}
+{#                        <i class="fas fa-search"></i>#}
+{#                    </a>#}
+                    <a href="#" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fas fa-search"></i>
+                    </a>
+                </h3>
                 <table class="table table-sm">
                     <tr>
-                        <th>Montant emprunté 110 %</th>
-                        <td></td>
+                        <th>Emprunt 110 %</th>
+                        <td id="montant_emprunte_110" class="text-right"></td>
                     </tr>
                     <tr>
-                        <th>Taux d'intérêt du prêt</th>
-                        <td>{{ projet.creditTaux }} %</td>
+                        <th>Taux du prêt</th>
+                        <td class="text-right">{{ projet.creditTaux }} %</td>
                     </tr>
                     <tr>
                         <th>Taux d'assurance</th>
-                        <td>{{ projet.creditTauxAss }} %</td>
+                        <td class="text-right">{{ projet.creditTauxAss }} %</td>
                     </tr>
                     <tr>
-                        <th>Durée d'emprunt (années)</th>
-                        <td>{{ projet.creditDureeMois / 12 }}</td>
+                        <th>Durée (années)</th>
+                        <td class="text-right">{{ projet.creditDureeMois / 12 }}</td>
                     </tr>
                     <tr>
-                        <th>Date de début du prêt</th>
-                        <td>{{ projet.creditDateDebut | format_date() }}</td>
+                        <th>Début du prêt</th>
+                        <td class="text-right">{{ projet.creditDateDebut | format_date() }}</td>
                     </tr>
                     <tr>
                         <th>Mensualité du prêt</th>
-                        <td>{{ mens | format_currency('EUR') }}</td>
+                        <td class="text-right">{{ mens | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Annualités</th>
-                        <td></td>
+                        <td class="text-right">{{ (mens * 12) | format_currency('EUR') }}</td>
                     </tr>
                     <tr>
                         <th>Total des remboursements</th>
-                        <td></td>
+                        <td class="text-right"></td>
                     </tr>
                 </table>
             </div>
@@ -172,81 +179,190 @@
         </div>
         <h3>Aide à la décision</h3>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <table class="table table-sm">
                     <tr>
                         <th>Montant à payer le jour de la signature</th>
-                        <td id="montant_jour_signature">__</td>
+                        <td id="montant_jour_signature" class="text-right">__</td>
                         <td>dossier + garantie</td>
                     </tr>
                     <tr>
                         <th>Prix d'achat à viser</th>
-                        <td id="prix_achat_a_viser">__</td>
+                        <td id="prix_achat_a_viser" class="text-right">__</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Delta avec le prix actuel FAI</th>
-                        <td id="delta_avec_prix_fai"></td>
+                        <td id="delta_avec_prix_fai" class="text-right"></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Taux de couverture des mensualités</th>
-                        <td id="taux_couverture_mensualites"></td>
+                        <td id="taux_couverture_pret" class="text-right"></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Loyer à obtenir pour 70% de taux de couverture</th>
-                        <td id="loyer_a_obtenir_pour_70pct_couverture"></td>
+                        <td id="loyer_a_obtenir_pour_70pct_couverture" class="text-right"></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Charges+intérêts+travaux/loyer</th>
-                        <td id="charges_interets_travaux_sur_loyer"></td>
+                        <td id="charges_interets_travaux_sur_loyer" class="text-right"></td>
                         <td>Si > 30% passer aux frais réels</td>
                     </tr>
                     <tr>
                         <th>Baisse de prix de départ net vendeur</th>
-                        <td id="baisse_prix_depart_net_vendeur"></td>
+                        <td id="baisse_prix_depart_net_vendeur" class="text-right"></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Rendement brut hors frais achat</th>
-                        <td id="rendement_brut_hors_frais_achat"></td>
-                        <td>10 %</td>
+                        <td id="rendement_brut_hors_frais_achat" class="text-right"></td>
+                        <td class="text-right">10 %</td>
                     </tr>
                     <tr>
                         <th>Rendement brut yc frais notaire</th>
-                        <td id="rendement_brut_yc_frais_notaire"></td>
-                        <td>8 %</td>
+                        <td id="rendement_brut_yc_frais_notaire" class="text-right"></td>
+                        <td class="text-right">8 %</td>
                     </tr>
                     <tr>
                         <th>Rendement brut yc frais achat</th>
-                        <td id="rendement_brut_yc_frais_achat"></td>
-                        <td>7 %</td>
+                        <td id="rendement_brut_yc_frais_achat" class="text-right"></td>
+                        <td class="text-right">7 %</td>
                     </tr>
                 </table>
             </div>
-            <div class="col-md-8"></div>
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Scénarios</th>
+                        <th>Pessimiste</th>
+                        <th>Réaliste</th>
+                        <th>Optimiste</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Loyer mensuel</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Loyer annuel</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Vacance locative</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Charges annuelles</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Remboursement prêt</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Cashflow avant impôt</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Impôts (moyenne sur 15 ans)</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Cashflow après impôt</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
         const projet = JSON.parse('{{ projetJson|raw }}');
-        console.log('projet',projet);
+        const mens = JSON.parse('{{ mens|raw }}');
+        console.log('projet', projet);
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // const creditFraisDossier = document.querySelector('#js-credit-frais-dossier');
             // const creditGarantie = document.querySelector('#js-credit-garantie');
             // console.log(creditFraisDossier, creditGarantie);
             // const montantJourSignature = parseInt(creditFraisDossier.dataset.creditFraisDossier)
             //     + parseInt(creditGarantie.dataset.creditGarantie);
+            byId('montant_emprunte_110').textContent = formatter.format(parseFloat(projet.netVendeur)
+                + parseFloat(projet.fraisAgence) + parseFloat(projet.fraisNotaire) + parseFloat(projet.travaux)
+                + parseFloat(projet.meubles) + parseFloat(projet.creditFraisDossier) + parseFloat(projet.creditGarantie));
             const montantJourSignature = projet.creditFraisDossier + projet.creditGarantie;
             byId('montant_jour_signature').textContent = formatter.format(montantJourSignature);
             const prixAchatAViser = projet.loyerCibleHc * 12 * 10;
             byId('prix_achat_a_viser').textContent = formatter.format(prixAchatAViser);
+            const prixFAI = parseInt(projet.netVendeur) + parseInt(projet.fraisAgence);
+            // console.log('FAI', prixFAI);
+            byId('delta_avec_prix_fai').textContent = formatter.format(prixAchatAViser - prixFAI);
+            const tauxCouverturePret = (mens / projet.loyerCibleHc).toFixed(2);
+            byId('taux_couverture_pret').textContent = tauxCouverturePret + ' %';
+            byId('loyer_a_obtenir_pour_70pct_couverture').textContent = formatter.format((mens / 0.7).toFixed(2));
+            byId('charges_interets_travaux_sur_loyer').textContent = 'TODO';
         });
         // $(function () {
         //     let montantJourSignature = $('#js-credit-garantie').data('creditGarantie')
