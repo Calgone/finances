@@ -6,7 +6,7 @@ use App\Entity\Immo\Bien;
 use App\Entity\Immo\Lot;
 use App\Entity\Immo\Projet;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker;
 
 class ProjetFixtures extends Fixture

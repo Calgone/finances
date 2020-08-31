@@ -1,3 +1,11 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']
+    number_format:
+        decimals: 0
+        decimal_point: ','
+        thousands_separator: ' '
+    date:
+        format: 'd/m/Y H:i'
+        interval_format: '%d jours'
+        timezone: 'Europe/Paris'

@@ -2,7 +2,7 @@
 
 namespace App\Repository\Compta;
 
-use App\Entity\Compta\Operation;
+use App\Entity\Bank\Operation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

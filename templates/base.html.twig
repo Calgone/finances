@@ -13,7 +13,7 @@
 </head>
 <body>
 {{ include('navbar.html.twig') }}
-<div class="container">
+<div class="container mt-2">
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -37,6 +37,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('fonctions') }}
 
     <!-- Renders app.js & a webpack runtime.js file
         <script src="/build/runtime.js"></script>

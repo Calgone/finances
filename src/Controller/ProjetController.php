@@ -68,6 +68,9 @@ class ProjetController extends AbstractController
     /**
      * Modifie un projet
      * @Route("/projet/{id}", name="projet.edit")
+     * @param Projet $projet
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function edit(Projet $projet, Request $request)
     {
@@ -95,6 +98,8 @@ class ProjetController extends AbstractController
 
     /**
      * @Route("/projet/{id}/detail", name="projet.detail")
+     * @param Projet $projet
+     * @return Response
      */
     public function detail(Projet $projet)
     {

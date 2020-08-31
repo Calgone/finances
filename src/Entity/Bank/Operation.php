@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Compta;
+namespace App\Entity\Bank;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,22 +19,22 @@ class Operation
     /**
      * @ORM\Column(type="date")
      */
-    private $date_operation;
+    private $date;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $type_operation;
+    private $type;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $mode_paiement;
+    private $mean;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $libelle;
+    private $label;
 
     /**
      * @ORM\Column(type="decimal", precision=12, scale=2)
@@ -46,50 +46,50 @@ class Operation
         return $this->id;
     }
 
-    public function getDateOperation(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date_operation;
+        return $this->date;
     }
 
-    public function setDateOperation(\DateTimeInterface $date_operation): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->date_operation = $date_operation;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getTypeOperation(): ?int
+    public function getType(): ?int
     {
-        return $this->type_operation;
+        return $this->type;
     }
 
-    public function setTypeOperation(int $type_operation): self
+    public function setType(int $type): self
     {
-        $this->type_operation = $type_operation;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getModePaiement(): ?int
+    public function getMean(): ?int
     {
-        return $this->mode_paiement;
+        return $this->mean;
     }
 
-    public function setModePaiement(int $mode_paiement): self
+    public function setMean(int $mean): self
     {
-        $this->mode_paiement = $mode_paiement;
+        $this->mean = $mean;
 
         return $this;
     }
 
-    public function getLibelle(): ?string
+    public function getLabel(): ?string
     {
-        return $this->libelle;
+        return $this->label;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setLabel(string $label): self
     {
-        $this->libelle = $libelle;
+        $this->label = $label;
 
         return $this;
     }

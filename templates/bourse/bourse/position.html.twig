@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de vos positions{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Liste des positions</h1>
+
+        <table id="tabletest" class="table">
+            <thead>
+            <tr>
+                <th>Valeur</th>
+                <th>Quantité</th>
+                <th>Prix revient</th>
+                <th>Cours</th>
+                <th>Montant</th>
+                <th>+/- Latentes</th>
+                <th>+/- %</th>
+                <th>Derniers Mvt</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#tabletest").DataTable({
+                "columnDefs": [// These are the column name variables that will be sent to the server
+                    {data: "name", targets: 0},
+                    {data: "volume", targets: 1, className: 'text-right'},
+                    {data: "unitCost", targets: 2, className: 'text-right'},
+                    {data: "quote", targets: 3, className: 'text-right'},
+                    {data: "amount", targets: 4, className: 'text-right'},
+                    {data: "capitalGain", targets: 5, className: 'text-right'},
+                    {data: "capitalGainPercent", targets: 6, className: 'text-right'},
+                    {data: "lastMovement", targets: 7},
+                ],
+                // "columns": [
+                //     {"data": "name"},
+                //     {"data": "volume"},
+                //     {"data": "unitCost"},
+                //     {"data": "quote"},
+                //     {"data": "amount"},
+                //     {"data": "capitalGain"},
+                //     {"data": "capitalGainPercent"},
+                //     {"data": "lastMovement"}
+                // ],
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ path('position.list') }}",
+                    "type": "POST"
+                    // "data": function (d) {
+                    //     d.myKey = "myValue";
+                    //     // d.custom = $('#myInput').val();
+                    //     // etc
+                    // }
+                },
+                "paging": true,
+                "info": true,
+                "searching": true,
+                "responsive": true,
+                "pagelength": 10,
+                // "order": [[2, 'asc']]
+            }
+        );
+    </script>
+{% endblock %}

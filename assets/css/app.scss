@@ -24,3 +24,6 @@ $body-bg: #f8fafc;
 body {
     background-color: lightgray;
 }
+@import "~easy-autocomplete/dist/easy-autocomplete.min.css";
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+//@import "~@fullcalendar/bootstrap/main.css";

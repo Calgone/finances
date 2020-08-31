@@ -2,25 +2,25 @@
 
 namespace App\Repository\Compta;
 
-use App\Entity\Compta\Compte;
+use App\Entity\Bank\Account;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Compte|null find($id, $lockMode = null, $lockVersion = null)
- * @method Compte|null findOneBy(array $criteria, array $orderBy = null)
- * @method Compte[]    findAll()
- * @method Compte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Account|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Account|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Account[]    findAll()
+ * @method Account[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CompteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Compte::class);
+        parent::__construct($registry, Account::class);
     }
 
     // /**
-    //  * @return Compte[] Returns an array of Compte objects
+    //  * @return Account[] Returns an array of Account objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CompteRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Compte
+    public function findOneBySomeField($value): ?Account
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

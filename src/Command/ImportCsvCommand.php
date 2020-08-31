@@ -15,7 +15,7 @@ class ImportCsvCommand extends Command
 
     protected function configure()
     {
-        $this
+        $this->setName('csv:import')
             ->setDescription('Importe un fichier CSV de la banque.')
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
@@ -35,7 +35,7 @@ class ImportCsvCommand extends Command
             // ...
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Fichier importé.');
 
         return 0;
     }

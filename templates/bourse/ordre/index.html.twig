@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste de vos ordres{% endblock %}
+
+{% block body %}
+     <div class="container">
+        <h1>Liste des ordres</h1>
+
+        <table id="tabletest" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Date ordre</th>
+                <th>Libellé</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#tabletest").DataTable({
+                // "columnDefs": [// These are the column name variables that will be sent to the server
+                //     {"name": "Date ordre", "targets": 0},
+                //     {"name": "Libellé", "targets": 1},
+                //     // {"name": "sens", "targets": 2},
+                //     // {"name": "etat", "targets": 3},
+                //     // {"name": "quantite", "targets": 4},
+                //     // {"name": "type", "targets": 5},
+                //     // {"name": "cours", "targets": 6},
+                //     // {"name": "validite", "targets": 7},
+                //     // {"name": "marche", "targets": 8},
+                // ],
+                "columns": [
+                    {"data": "date_ordre"},
+                    {"data": "libelle"}
+                ],
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "ordre/list",
+                    "type": "POST"
+                    // "data": function (d) {
+                    //     d.myKey = "myValue";
+                    //     // d.custom = $('#myInput').val();
+                    //     // etc
+                    // }
+                },
+                "paging": true,
+                "info": true,
+                "searching": true,
+                "responsive": true,
+                "pagelength": 10,
+                // "order": [[2, 'asc']]
+            }
+        );
+    </script>
+{% endblock %}

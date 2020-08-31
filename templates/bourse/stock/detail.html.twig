@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du projet{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Fiche valeur {{ stock.name }}</h2>
+                {{ stock.isin }} {{ stock.ticker }}
+
+            </div>
+            <div class="col-md-2">
+                <img src="{{ stock.logo }}" alt="logo">
+            </div>
+        </div>
+
+        <br>
+        IPO: {{ stock.ipo|date('d/m/Y') }}
+        <br>
+        Valorisation: {{ stock.marketCap|number_format }} MEur
+        <br>
+        Actions en circulation: {{ stock.shareOutstanding|number_format }}
+        <br>
+        Site internet : <a target="_blank" href="{{ stock.webUrl }}">{{ stock.webUrl }}</a>
+        <br>
+        Lien Boursorama : <a target="_blank" href="{{ stock.lienBoursorama }}">Lien</a>
+        <hr>
+        <div class="row">
+            {% if stock.quotes[0] is defined %}
+                <div class="col-md-6">
+                <h5>Cours au {{ stock.quotes[0].priceAt|date }}</h5>
+                <br>
+                <b style="font-size: 2em;">{{ stock.quotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
+                <br>
+                <span style="font-size:1.5em; color: {{ stock.quotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
+                    {{ stock.quotes[0].getPreviousPercent }} %
+                </span>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Ouverture</th>
+                        <th>Cloture veille</th>
+                    </tr>
+                    <tr>
+                        <td>{{ stock.quotes[0].openPrice|format_currency('EUR') }}</td>
+                        <td>{{ stock.quotes[0].previousClosePrice|format_currency('EUR') }}</td>
+                    </tr>
+                    <tr>
+                        <th>+ Bas</th>
+                        <th>+ Haut</th>
+                    </tr>
+                    <tr>
+                        <td>{{ stock.quotes[0].lowPrice|format_currency('EUR') }}</td>
+                        <td>{{ stock.quotes[0].highPrice|format_currency('EUR') }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% else %}
+                <div class="col-md-12">
+                    Aucun cours récupéré pour cette action.
+                </div>
+
+            {% endif %}
+        </div>
+        <hr>
+        <button class="btn btn-info maj" data-method="getProfile">Mettre à jour la fiche valeur</button>
+        <button class="btn btn-secondary maj" data-method="getBasicFinancial">Récupérer le résumé</button>
+        <button class="btn btn-light maj" data-method="getQuote">Récupérer les cours</button>
+        <a href="{{ path('order.new', {id: stock.id}) }}">Passer un ordre</a>
+        <div id="div_res"></div>
+        <table class="table table-sm" id="table_res"></table>
+    </div>
+{% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(() => {
+            $('.maj').click(function () {
+                console.log($(this).data('method'));
+                getInfo($(this).data('method'));
+            });
+        });
+
+        function getInfo(method) {
+            $.ajax({
+                url: '{{ path('stock.json', {id: stock.id}) }}',
+                type: 'post',
+                data: {method: method},
+                cache: false,
+                // processData: false,
+                start: function () {
+                    $('#div_res').html('Ajax en cours...');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#div_res').html(xhr.responseText + ' ' + thrownError);
+                },
+                success: function (response) {
+                    //console.log(response);
+                    // $('#div_res').html(response.data.metric.beta);
+                    $('#table_res').html();
+                    buildKeyValueTable(response.data.metric, '#table_res');
+                },
+                complete: function () {
+                    //$('#div_res').html('');
+                }
+            });
+        }
+    </script>
+{% endblock javascripts %}
