@@ -7,3 +7,9 @@ or, recompile assets automatically when files change
 
 on deploy, create a production build  
 `yarn encore production`
+
+## Updating the project
+
+`composer update`
+
+`yarn upgrade`
