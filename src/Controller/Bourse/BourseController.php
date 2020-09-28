@@ -34,6 +34,7 @@ class BourseController extends AbstractController
      */
     public function index()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('bourse/bourse/index.html.twig', [
             'controller_name' => 'BourseController',
         ]);

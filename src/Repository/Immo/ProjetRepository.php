@@ -4,7 +4,7 @@ namespace App\Repository\Immo;
 
 use App\Entity\Immo\Projet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Projet|null find($id, $lockMode = null, $lockVersion = null)

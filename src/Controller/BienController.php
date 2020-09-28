@@ -35,6 +35,7 @@ class BienController extends AbstractController
      */
     public function index()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $biens = $this->bienRepo->findAll();
 
         return $this->render('immo/bien/index.html.twig', compact('biens'));

@@ -27,6 +27,7 @@ class ImmoController extends AbstractController
      */
     public function index()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $biens = $this->bienRepo->findLatest();
 
         return $this->render('immo/index.html.twig', [

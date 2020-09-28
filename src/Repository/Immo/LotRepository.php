@@ -4,7 +4,7 @@ namespace App\Repository\Immo;
 
 use App\Entity\Immo\Lot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Lot|null find($id, $lockMode = null, $lockVersion = null)
