@@ -21,14 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class StockController extends AbstractController
 {
 //    private $projetRepo;
-    private $em;
+//    private $em;
     private $stockSrv;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(StockService $srv) //EntityManagerInterface $em)
     {
 //        $this->projetRepo = $projetRepo;
-        $this->em = $em;
-        $this->stockSrv = new StockService($this->em);
+//        $this->em = $em;
+//        $this->stockSrv = new StockService($this->em);
+        $this->stockSrv = $srv;
     }
 
     /**
@@ -67,10 +68,10 @@ class StockController extends AbstractController
     public function stockJson(Request $request, Stock $stock)
     {
 
-        $stockSrv = new StockService($this->em);
+//        $stockSrv = new StockService($this->em);
 
         $method = $request->request->get('method');
-        $res = $stockSrv->$method($stock);
+        $res = $this->stockSrv->$method($stock);
         $response = ['message' => 'ok', 'data' => $res];
 //        dd($stock);
 //        $this->em->persist($stock);
@@ -98,10 +99,7 @@ class StockController extends AbstractController
     {
         $isin = trim($request->request->get('stock_search'));
 //        dd($isin);
-        $stockSrv = new StockService($this->em);
-        $stock = new Stock();
-        $stock->setIsin($isin);
-        $stockSrv->getProfile($stock);
+        $stock = $this->stockSrv->getProfile($isin);
         $response = ['message' => 'ok', 'data' => $stock];
         $serializer = $this->get('serializer');
         $responseJson = $serializer->serialize($response, 'json',
@@ -125,15 +123,8 @@ class StockController extends AbstractController
     {
         $term = trim($request->request->get('term'));
 //        dd($request->request->get('phrase'));
+        $result = $this->stockSrv->searchLocalStock($term);
 
-        $repo = $this->em->getRepository("App:Bourse\Stock");
-        $query = $repo->createQueryBuilder('s')
-            ->where('s.name LIKE :term')
-            ->orWhere('s.isin LIKE :term')
-            ->orWhere('s.ticker LIKE :term')
-            ->setParameter('term', '%' . $term . '%')
-            ->getQuery();
-        $result = $query->getResult();
 //        dd($result);
         $i = 0;
         $response = [];
@@ -141,7 +132,6 @@ class StockController extends AbstractController
             $response[$i]['id'] = $v->getId();
             $response[$i]['name'] = $v->getName();
         }
-
 
 //        $response = [['name' => 'abc'], ['name' => 'def'], ['name' => 'ghi']];
         return new JsonResponse($response, 200);

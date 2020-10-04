@@ -6,6 +6,7 @@ use App\Entity\Bourse\Order;
 use App\Entity\Bourse\Position;
 use App\Entity\Bourse\Stock;
 use App\Form\Bourse\OrderType;
+use App\Service\DataTablesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,13 +43,17 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/ordre/list")
+     * @Route("/order/list")
      * @param Request $request
      * @return JsonResponse
      */
     public function list(Request $request)
     {
-        $response = ['draw'            => 1,
+        $dtSrv = new DataTablesService();
+        $dtSrv->getRequest($request);
+
+
+        $response = ['draw'            => $dtSrv->getDraw(),
                      'recordsTotal'    => 2,
                      'recordsFiltered' => 2,
                      'data'            => [
@@ -60,7 +65,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/stock/{id}/ordre/new", name="order.new")
+     * @Route("/stock/{id}/order/new", name="order.new")
      * @param Request $request
      * @param Stock $stock
      * @return Response|RedirectResponse
@@ -72,6 +77,21 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrer la position. Si achat: création, si vente: suppression
+
+            if ($order->getDirection() === 'buy') {
+                $position = new Position();
+                $position->setStock($stock);
+                $position->setCreatedAt(new \DateTime());
+                $position->setUnitCost($order->getQuotation());
+                $position->setVolume($order->getVolume());
+                $this->em->persist($position);
+            } else { // 'sell'
+                $positionRepo = $this->em->getRepository(Position::class);
+                $position = $positionRepo->findOneBy(['stock' => $stock]);
+                $this->em->remove($position);
+            }
+
             $this->em->persist($order);
             $this->em->flush();
             $this->addFlash('success',"L'ordre est enregistré.");

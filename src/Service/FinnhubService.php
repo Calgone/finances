@@ -36,15 +36,18 @@ class FinnhubService extends ApiService
     /**
      * https://finnhub.io/docs/api#company-profile2
      * @param string $isin
-     * @return \stdClass
+     * @return \stdClass|null
      */
-    public function getProfile(string $isin): \stdClass
+    public function getProfile(string $isin):? \stdClass
     {
 //        dump($symbol);
         $this->setUrl('stock/profile2', ['isin' => $isin]);
         $result = $this->exec();
+//        var_dump(json_decode($result));
 //        dd($result);
-
+        if ($result === "{}") {
+            return null;
+        }
         return json_decode($result);
     }
 

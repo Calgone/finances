@@ -5,6 +5,7 @@ namespace App\Controller\Bourse;
 use App\Entity\Bourse\Stock;
 use App\Entity\Bourse\Position;
 use App\Service\Bourse\BourseService;
+use App\Service\DataTablesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,31 +60,16 @@ class BourseController extends AbstractController
      */
     public function positionList(Request $request)
     {
-//        $bourseSrv  = new BourseService($this->em);
-
         // Get the parameters from Datatable Ajax call
-        if ($request->getMethod() === 'POST') {
-            $draw    = intval($request->request->get('draw'));
-            $start   = $request->request->get('start');
-            $length  = $request->request->get('length');
-            $search  = $request->request->get('search');
-            $orders  = $request->request->get('order');
-            $columns = $request->request->get('columns');
-        } else {
-            die;
-        }
-//        dd($draw, $start, $length, $search, $orders, $columns);
+//        if ($request->getMethod() === 'POST') {
 
-        // Orders
-        foreach ($orders as $key => $order) {
-            // Orders does not contain the name of the column, but its number,
-            // so add the name so we can handle it just like the $columns array
-            $orders[$key]['name'] = $columns[$order['column']]['name'];
-        }
+        $dtSrv = new DataTablesService();
+        $dtSrv->getRequest($request);
 
         //$positions = $this->em->getRepository(Position::class)->findAll();
         $results = $this->positionRepo->getRequiredDTData(
-            $start, $length, $orders, $search, $columns);
+            $dtSrv->getStart(), $dtSrv->getLength(), $dtSrv->getOrders(),
+            $dtSrv->getSearch(), $dtSrv->getColumns());
 //        dd($results);
         // Returned objects are of type Position
         /**
@@ -109,7 +95,7 @@ class BourseController extends AbstractController
             $currentAmount      = $currentPrice * $position->getVolume();
             $initialAmount      = $position->getUnitCost() * $position->getVolume();
             $capitalGain        = $currentAmount - $initialAmount;
-            $capitalGainPercent = round(($capitalGain / $currentAmount) * 100,2);
+            $capitalGainPercent = round(($capitalGain / $currentAmount) * 100, 2);
 
             $responseData[$i]['name']               = $href;
             $responseData[$i]['volume']             = $position->getVolume();
@@ -117,7 +103,7 @@ class BourseController extends AbstractController
             $responseData[$i]['quote']              = $fmt->formatCurrency($currentPrice, "EUR");
             $responseData[$i]['amount']             = $fmt->formatCurrency($currentAmount, "EUR");
             $responseData[$i]['capitalGain']        = $fmt->formatCurrency($capitalGain, "EUR");
-            $responseData[$i]['capitalGainPercent'] = number_format($capitalGainPercent, 2, ',', ' ') . ' %' ;
+            $responseData[$i]['capitalGainPercent'] = number_format($capitalGainPercent, 2, ',', ' ') . ' %';
             $responseData[$i]['lastMovement']       = '2020-01-02 13:42:23';
             $i++;
         }
@@ -127,7 +113,7 @@ class BourseController extends AbstractController
 //        ]);
 
         $response = [
-            'draw'            => $draw,
+            'draw'            => $dtSrv->getDraw(),
             'recordsTotal'    => $total_objects_count,
             'recordsFiltered' => $filtered_objects_count,
             'data'            => $responseData
