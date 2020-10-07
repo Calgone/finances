@@ -2,6 +2,7 @@
 
 namespace App\Controller\Bourse;
 
+use App\Entity\Bourse\Order;
 use App\Entity\Bourse\Stock;
 use App\Entity\Bourse\Position;
 use App\Service\Bourse\BourseService;
@@ -36,8 +37,12 @@ class BourseController extends AbstractController
     public function index()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $lastOrders = $this->getDoctrine()
+            ->getRepository(Order::class)
+            ->findLastTrades();
         return $this->render('bourse/bourse/index.html.twig', [
             'controller_name' => 'BourseController',
+            'lastOrders'      => $lastOrders,
         ]);
     }
 

@@ -227,4 +227,15 @@ class Order
 
         return $this;
     }
+    public function getDirectionLetterHtml()
+    {
+        if ($this->direction === 'buy') {
+            $color = 'green';
+            $letter = 'A';
+        } else {
+            $color = 'red';
+            $letter = 'V';
+        }
+        return '<span style="color:'.$color.'">' . $letter . '</span>';
+    }
 }

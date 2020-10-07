@@ -22,11 +22,9 @@
         <div>
             <h2>Mes 5 derniers trades</h2>
             <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
+                {% for order in lastOrders %}
+                    <li>{{ order.date|date('d/m/y') }} {{ order.getDirectionLetterHtml()|raw }}</li>
+                {% endfor %}
             </ul>
         </div>
         <form id="form_search" action="{{ path('stock.search') }}" class="form-inline mb-2">

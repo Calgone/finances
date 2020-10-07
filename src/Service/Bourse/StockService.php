@@ -3,10 +3,12 @@
 
 namespace App\Service\Bourse;
 
+use App\Entity\Bourse\Position;
 use App\Entity\Bourse\Quote;
 use App\Entity\Bourse\Stock;
 use App\Service\FinnhubService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Mailer\MailerInterface;
 
 class StockService
@@ -107,5 +109,34 @@ class StockService
             ->setParameter('term', '%' . $term . '%')
             ->getQuery();
         return $query->getResult();
+    }
+
+    // Les 2 méthodes peuvent être remplacées par les relations dans l'entité
+//    /**
+//     * Returns all orders on that Stock
+//     */
+//    public function getStockOrderHistory(): array
+//    {
+//        $query = $this->em->createQuery('
+//                SELECT o
+//                FROM App\Entity\Bourse\Order o
+//                WHERE o.stock = :stock
+//        ')->setParameter('stock', $this->stock);
+//        return $query->getResult();
+//    }
+
+    /**
+     * @return Position|null
+     * @throws NonUniqueResultException
+     */
+    public function getStockPosition():? Position
+    {
+        $query = $this->em->createQuery('
+            SELECT p
+            FROM App\Entity\Bourse\Position p
+            WHERE p.stock=:stock
+        ')->setParameter('stock', $this->stock);
+        return $query->getOneOrNullResult();
+
     }
 }

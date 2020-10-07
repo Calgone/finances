@@ -29,40 +29,44 @@
         <div class="row">
             {% if stock.quotes[0] is defined %}
                 <div class="col-md-6">
-                <h5>Cours au {{ stock.quotes[0].priceAt|date }}</h5>
-                <br>
-                <b style="font-size: 2em;">{{ stock.quotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
-                <br>
-                <span style="font-size:1.5em; color: {{ stock.quotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
+                    <h5>Cours au {{ stock.quotes[0].priceAt|date }}</h5>
+                    <br>
+                    <b style="font-size: 2em;">{{ stock.quotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
+                    <br>
+                    <span style="font-size:1.5em; color: {{ stock.quotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
                     {{ stock.quotes[0].getPreviousPercent }} %
                 </span>
-            </div>
-            <div class="col-md-6">
-                <table class="table table-sm">
-                    <tr>
-                        <th>Ouverture</th>
-                        <th>Cloture veille</th>
-                    </tr>
-                    <tr>
-                        <td>{{ stock.quotes[0].openPrice|format_currency('EUR') }}</td>
-                        <td>{{ stock.quotes[0].previousClosePrice|format_currency('EUR') }}</td>
-                    </tr>
-                    <tr>
-                        <th>+ Bas</th>
-                        <th>+ Haut</th>
-                    </tr>
-                    <tr>
-                        <td>{{ stock.quotes[0].lowPrice|format_currency('EUR') }}</td>
-                        <td>{{ stock.quotes[0].highPrice|format_currency('EUR') }}</td>
-                    </tr>
-                </table>
-            </div>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Ouverture</th>
+                            <th>Cloture veille</th>
+                        </tr>
+                        <tr>
+                            <td>{{ stock.quotes[0].openPrice|format_currency('EUR') }}</td>
+                            <td>{{ stock.quotes[0].previousClosePrice|format_currency('EUR') }}</td>
+                        </tr>
+                        <tr>
+                            <th>+ Bas</th>
+                            <th>+ Haut</th>
+                        </tr>
+                        <tr>
+                            <td>{{ stock.quotes[0].lowPrice|format_currency('EUR') }}</td>
+                            <td>{{ stock.quotes[0].highPrice|format_currency('EUR') }}</td>
+                        </tr>
+                    </table>
+                </div>
             {% else %}
                 <div class="col-md-12">
                     Aucun cours récupéré pour cette action.
                 </div>
-
             {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+            </div>
         </div>
         <hr>
         <button class="btn btn-info maj" data-method="getProfile">Mettre à jour la fiche valeur</button>
@@ -71,6 +75,14 @@
         <a href="{{ path('order.new', {id: stock.id}) }}">Passer un ordre</a>
         <div id="div_res"></div>
         <table class="table table-sm" id="table_res"></table>
+        <div>
+            <h5>Historique des ordres</h5>
+            <ul>
+                {% for order in stock.orders %}
+                    <li>{{ order.date|date('d/m/y') }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock body %}
 

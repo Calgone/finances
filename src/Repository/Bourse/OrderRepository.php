@@ -19,6 +19,19 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    /**
+     * @return Order[]
+     */
+    public function findLastTrades(): array
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT o
+            FROM App\Entity\Bourse\Order o
+            ORDER BY o.date DESC
+            '
+        )->setMaxResults(5);
+        return $query->getResult();
+    }
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */

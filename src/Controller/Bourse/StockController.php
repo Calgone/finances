@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/bourse")
  * @package App\Controller\Bourse
  */
-
 class StockController extends AbstractController
 {
 //    private $projetRepo;
@@ -49,11 +48,16 @@ class StockController extends AbstractController
      */
     public function stockDetail(Request $request)
     {
-        $id = $request->get('id');
+        $id    = $request->get('id');
         $stock = $this->stockSrv->getCurrentStock($id);
 //        dd($stock);
+        $this->stockSrv->setStock($stock);
+//        $stockOrderHistory = $this->stockSrv->getStockOrderHistory();
+        $stockPosition     = $this->stockSrv->getStockPosition();
         return $this->render('bourse/stock/detail.html.twig', [
-                'stock' => $stock
+                'stock'             => $stock,
+//                'stockOrderHistory' => $stockOrderHistory,
+                'stockPosition'     => $stockPosition
             ]
         );
     }
@@ -70,14 +74,14 @@ class StockController extends AbstractController
 
 //        $stockSrv = new StockService($this->em);
 
-        $method = $request->request->get('method');
-        $res = $this->stockSrv->$method($stock);
+        $method   = $request->request->get('method');
+        $res      = $this->stockSrv->$method($stock);
         $response = ['message' => 'ok', 'data' => $res];
 //        dd($stock);
 //        $this->em->persist($stock);
 //        $this->em->flush();
         $serializer = $this->get('serializer');
-        $stockJson = $serializer->serialize($response, 'json',
+        $stockJson  = $serializer->serialize($response, 'json',
             [
                 'circular_reference_handler' => function ($object) {
                     return $object->getId();
@@ -99,9 +103,9 @@ class StockController extends AbstractController
     {
         $isin = trim($request->request->get('stock_search'));
 //        dd($isin);
-        $stock = $this->stockSrv->getProfile($isin);
-        $response = ['message' => 'ok', 'data' => $stock];
-        $serializer = $this->get('serializer');
+        $stock        = $this->stockSrv->getProfile($isin);
+        $response     = ['message' => 'ok', 'data' => $stock];
+        $serializer   = $this->get('serializer');
         $responseJson = $serializer->serialize($response, 'json',
             [
                 'circular_reference_handler' => function ($object) {
@@ -126,10 +130,10 @@ class StockController extends AbstractController
         $result = $this->stockSrv->searchLocalStock($term);
 
 //        dd($result);
-        $i = 0;
+        $i        = 0;
         $response = [];
         foreach ($result as $k => $v) {
-            $response[$i]['id'] = $v->getId();
+            $response[$i]['id']   = $v->getId();
             $response[$i]['name'] = $v->getName();
         }
 
