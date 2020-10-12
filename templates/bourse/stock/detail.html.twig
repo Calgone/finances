@@ -6,7 +6,12 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-10">
-                <h2>Fiche valeur {{ stock.name }}</h2>
+                <h2>Fiche valeur {{ stock.name }}
+                    <button class="btn btn-info maj" data-method="getProfile"
+                            title="Mettre à jour la fiche valeur">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                </h2>
                 {{ stock.isin }} {{ stock.ticker }}
 
             </div>
@@ -29,7 +34,16 @@
         <div class="row">
             {% if stock.quotes[0] is defined %}
                 <div class="col-md-6">
-                    <h5>Cours au {{ stock.quotes[0].priceAt|date }}</h5>
+                    <h5>Cours au {{ stock.quotes[0].priceAt|date }}
+                        <button class="btn btn-sm btn-light maj" data-method="getQuote"
+                                title="Récupérer le cours">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light stock-alert"
+                                title="Créer une alerte">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                    </h5>
                     <br>
                     <b style="font-size: 2em;">{{ stock.quotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
                     <br>
@@ -60,6 +74,10 @@
             {% else %}
                 <div class="col-md-12">
                     Aucun cours récupéré pour cette action.
+                    <button class="btn btn-sm btn-light maj" data-method="getQuote"
+                            title="Récupérer le cours">
+                        <i class="fas fa-sync"></i>
+                    </button>
                 </div>
             {% endif %}
         </div>
@@ -69,9 +87,11 @@
             </div>
         </div>
         <hr>
-        <button class="btn btn-info maj" data-method="getProfile">Mettre à jour la fiche valeur</button>
-        <button class="btn btn-secondary maj" data-method="getBasicFinancial">Récupérer le résumé</button>
-        <button class="btn btn-light maj" data-method="getQuote">Récupérer les cours</button>
+        <button class="btn btn-secondary maj" data-method="getBasicFinancial"
+                title="Récupérer le résumé">
+            <i class="fas fa-list-ul"></i> Récupérer le résumé
+        </button>
+
         <a href="{{ path('order.new', {id: stock.id}) }}">Passer un ordre</a>
         <div id="div_res"></div>
         <table class="table table-sm" id="table_res"></table>
@@ -84,6 +104,29 @@
             </ul>
         </div>
     </div>
+    <!--
+        // Modals
+    -->
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade" id="alert-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">User Info</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock body %}
 
 {% block javascripts %}
@@ -94,6 +137,20 @@
             $('.maj').click(function () {
                 console.log($(this).data('method'));
                 getInfo($(this).data('method'));
+            });
+            $('.stock-alert').click(function(){
+                // let userid = $(this).data('id');
+                $.ajax({
+                    url: '{{ path('stock.alert-form', {id: stock.id}) }}',
+                    type: 'post',
+                    data: {stockId: {{ stock.id }}},
+                    success: function(response){
+                        // Add response in Modal body
+                        $('.modal-body').html(response);
+                        // Display Modal
+                        $('#alert-modal').modal('show');
+                    }
+                });
             });
         });
 
@@ -113,8 +170,17 @@
                 success: function (response) {
                     //console.log(response);
                     // $('#div_res').html(response.data.metric.beta);
-                    $('#table_res').html();
-                    buildKeyValueTable(response.data.metric, '#table_res');
+                    switch (method) {
+                        case 'getBasicFinancial':
+                            $('#table_res').html();
+                            buildKeyValueTable(response.data.metric, '#table_res');
+                            break;
+                        case 'getProfile':
+                        case 'getQuote':
+                        default:
+                            location.reload();
+                    }
+
                 },
                 complete: function () {
                     //$('#div_res').html('');

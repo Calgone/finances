@@ -53,11 +53,11 @@ class StockController extends AbstractController
 //        dd($stock);
         $this->stockSrv->setStock($stock);
 //        $stockOrderHistory = $this->stockSrv->getStockOrderHistory();
-        $stockPosition     = $this->stockSrv->getStockPosition();
+        $stockPosition = $this->stockSrv->getStockPosition();
         return $this->render('bourse/stock/detail.html.twig', [
-                'stock'             => $stock,
+                'stock'         => $stock,
 //                'stockOrderHistory' => $stockOrderHistory,
-                'stockPosition'     => $stockPosition
+                'stockPosition' => $stockPosition
             ]
         );
     }
@@ -103,7 +103,9 @@ class StockController extends AbstractController
     {
         $isin = trim($request->request->get('stock_search'));
 //        dd($isin);
-        $stock        = $this->stockSrv->getProfile($isin);
+        $stock = new Stock();
+        $stock->setIsin($isin);
+        $stock        = $this->stockSrv->getProfile($stock);
         $response     = ['message' => 'ok', 'data' => $stock];
         $serializer   = $this->get('serializer');
         $responseJson = $serializer->serialize($response, 'json',
@@ -139,5 +141,16 @@ class StockController extends AbstractController
 
 //        $response = [['name' => 'abc'], ['name' => 'def'], ['name' => 'ghi']];
         return new JsonResponse($response, 200);
+    }
+
+    /**
+     * Renvoie le template du formulaire pour créer une alerte
+     * @Route("/stock/alert-form", name="stock.alert-form")
+     */
+    public function stockAlert()
+    {
+        return $this->render('bourse/stock/alert.html.twig', [
+            'controller_name' => 'StockController',
+        ]);
     }
 }

@@ -37,14 +37,14 @@ class StockService
     }
 
     /**
-     * @param string $isin
+     * @param Stock $stock
      * @return Stock|null
      * @throws \Exception
      */
-    public function getProfile(string $isin):? Stock
+    public function getProfile(Stock $stock):? Stock
     {
-        $stock = new Stock();
-        $stock->setIsin($isin);
+//        $stock = new Stock();
+//        $stock->setIsin($isin);
 
         $res = $this->fhSrv->getProfile($stock->getIsin());
 //        var_dump($res);
