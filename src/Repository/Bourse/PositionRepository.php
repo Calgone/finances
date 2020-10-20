@@ -70,15 +70,15 @@ class PositionRepository extends ServiceEntityRepository
 
         // Create inner joins
         $query
-            ->join('position.stock', 'stock')
-            ->leftJoin('stock.quotes', 'quotes')
-            ->leftJoin('App\Entity\Bourse\Quote', 'last_quote',
+            ->join('position.action', 'action')
+            ->leftJoin('action.cotes', 'cotes')
+            ->leftJoin('App\Entity\Bourse\Cote', 'last_cote',
                 'WITH',
-                'quotes.stock=last_quote.stock AND quotes.id < last_quote.id')
-            ->where('last_quote.id IS NULL')
-            ->select('position', 'stock', 'quotes');
+                'cotes.action=last_cote.action AND cotes.id < last_cote.id')
+            ->where('last_cote.id IS NULL')
+            ->select('position', 'action', 'cotes');
         $countQuery
-            ->join('position.stock', 'stock');
+            ->join('position.action', 'action');
 
         // Fields Search
         foreach ($columns as $key => $column) {
@@ -91,7 +91,7 @@ class PositionRepository extends ServiceEntityRepository
                 switch ($column['name']) {
                     case 'name':
                     {
-                        $searchQuery = 'stock.name LIKE \'%' . $searchItem . '%\'';
+                        $searchQuery = 'action.name LIKE \'%' . $searchItem . '%\'';
                         break;
                     }
                     case 'postalCode':

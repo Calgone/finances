@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ExchangeRepository::class)
  */
-class Exchange // == Marché
+class Marche // == Marché
 {
     /**
      * @ORM\Id()
@@ -20,38 +20,38 @@ class Exchange // == Marché
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $country;
+    private $pays;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $nom;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCountry(): ?string
+    public function getPays(): ?string
     {
-        return $this->country;
+        return $this->pays;
     }
 
-    public function setCountry(string $country): self
+    public function setPays(string $pays): self
     {
-        $this->country = $country;
+        $this->pays = $pays;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNom(): ?string
     {
-        return $this->name;
+        return $this->nom;
     }
 
-    public function setName(string $name): self
+    public function setNom(string $nom): self
     {
-        $this->name = $name;
+        $this->nom = $nom;
 
         return $this;
     }

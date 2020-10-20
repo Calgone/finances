@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`order`")
+ * @ORM\Table(name="`ordre`")
  */
-class Order
+class Ordre
 {
     /**
      * @ORM\Id()
@@ -33,20 +33,17 @@ class Order
      */
     private $isin;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
-    private $direction; // buy or sell
+    // buy or sell
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $state; //
+    private $etat; //
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume; // quantité
+    private $quantite; // volume
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -56,28 +53,28 @@ class Order
     /**
      * @ORM\Column(type="float")
      */
-    private $quotation; // cours
+    private $cours; // quotation
 
     /**
      * @ORM\Column(type="date")
      */
-    private $validity;
+    private $validite;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $exchange;
+    private $marche;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $brokerFee;
+    private $fraisCourtage;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Stock::class, inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity=Action::class, inversedBy="ordres")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $stock; // Frais de courtage
+    private $action;
 
     public function getId(): ?int
     {
@@ -132,26 +129,26 @@ class Order
         return $this;
     }
 
-    public function getState(): ?string
+    public function getEtat(): ?string
     {
-        return $this->state;
+        return $this->etat;
     }
 
-    public function setState(string $state): self
+    public function setEtat(string $etat): self
     {
-        $this->state = $state;
+        $this->etat = $etat;
 
         return $this;
     }
 
-    public function getVolume(): ?int
+    public function getQuantite(): ?int
     {
-        return $this->volume;
+        return $this->quantite;
     }
 
-    public function setVolume(int $volume): self
+    public function setQuantite(int $quantite): self
     {
-        $this->volume = $volume;
+        $this->quantite = $quantite;
 
         return $this;
     }
@@ -168,68 +165,68 @@ class Order
         return $this;
     }
 
-    public function getQuotation(): ?float
+    public function getCours(): ?float
     {
-        return $this->quotation;
+        return $this->cours;
     }
 
-    public function setQuotation(float $quotation): self
+    public function setCours(float $cours): self
     {
-        $this->quotation = $quotation;
+        $this->cours = $cours;
 
         return $this;
     }
 
-    public function getValidity(): ?\DateTimeInterface
+    public function getValidite(): ?\DateTimeInterface
     {
-        return $this->validity;
+        return $this->validite;
     }
 
-    public function setValidity(\DateTimeInterface $validity): self
+    public function setValidite(\DateTimeInterface $validite): self
     {
-        $this->validity = $validity;
+        $this->validite = $validite;
 
         return $this;
     }
 
-    public function getExchange(): ?string
+    public function getMarche(): ?string
     {
-        return $this->exchange;
+        return $this->marche;
     }
 
-    public function setExchange(string $exchange): self
+    public function setMarche(string $marche): self
     {
-        $this->exchange = $exchange;
+        $this->marche = $marche;
 
         return $this;
     }
 
-    public function getBrokerfee(): ?float
+    public function getFraisCourtage(): ?float
     {
-        return $this->brokerFee;
+        return $this->fraisCourtage;
     }
 
-    public function setBrokerfee(float $brokerFee): self
+    public function setFraisCourtage(float $fraisCourtage): self
     {
-        $this->brokerFee = $brokerFee;
+        $this->fraisCourtage = $fraisCourtage;
 
         return $this;
     }
 
-    public function getStock(): ?Stock
+    public function getAction(): ?Action
     {
-        return $this->stock;
+        return $this->action;
     }
 
-    public function setStock(?Stock $stock): self
+    public function setAction(?Action $action): self
     {
-        $this->stock = $stock;
+        $this->action = $action;
 
         return $this;
     }
     public function getDirectionLetterHtml()
     {
-        if ($this->direction === 'buy') {
+        if ($this->type === 'a') { // achat
             $color = 'green';
             $letter = 'A';
         } else {

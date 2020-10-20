@@ -2,21 +2,21 @@
 
 namespace App\Repository\Bourse;
 
-use App\Entity\Bourse\Exchange;
+use App\Entity\Bourse\Marche;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Exchange|null find($id, $lockMode = null, $lockVersion = null)
- * @method Exchange|null findOneBy(array $criteria, array $orderBy = null)
- * @method Exchange[]    findAll()
- * @method Exchange[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Marche|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Marche|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Marche[]    findAll()
+ * @method Marche[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ExchangeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Exchange::class);
+        parent::__construct($registry, Marche::class);
     }
 
     // /**

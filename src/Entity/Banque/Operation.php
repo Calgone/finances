@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Bank;
+namespace App\Entity\Banque;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,11 +25,6 @@ class Operation
      * @ORM\Column(type="smallint")
      */
     private $type;
-
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $mean;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -66,18 +61,6 @@ class Operation
     public function setType(int $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getMean(): ?int
-    {
-        return $this->mean;
-    }
-
-    public function setMean(int $mean): self
-    {
-        $this->mean = $mean;
 
         return $this;
     }

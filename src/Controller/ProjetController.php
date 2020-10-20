@@ -118,7 +118,7 @@ class ProjetController extends AbstractController
             ->setNbMois($projet->getCreditDureeMois())
             ->setMtEmprunt($projet->getCreditMontant())
             ->setTxPret($projet->getCreditTaux() / 100)
-            ->setTxAss($projet->getCreditTauxAss() / 100)
+            ->setTxAss($projet->getCreditTauxAssurance() / 100)
             ->setDeb($projet->getCreditDateDebut());
 //        $srv = new PretService();
 //        dump($srv->test());

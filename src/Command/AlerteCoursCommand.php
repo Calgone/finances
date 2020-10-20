@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Service\Bourse\StockAlertService;
+use App\Service\Bourse\ActionAlerteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,12 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Mailer\MailerInterface;
 
-class PriceAlertCommand extends Command
+class AlerteCoursCommand extends Command
 {
     protected static $defaultName = 'app:price-alert';
     protected $stockSrv;
 
-    public function __construct(StockAlertService $srv)
+    public function __construct(ActionAlerteService $srv)
     {
         parent::__construct(self::$defaultName);
         $this->stockSrv = $srv;

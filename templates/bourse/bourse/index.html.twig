@@ -17,7 +17,7 @@
         <div>
             <h2>Valeurs</h2>
             <input type="text" id="search">
-            <a href="{{ path('stock.detail', {id: 1}) }}">Détail d'une action</a>
+            <a href="{{ path('action.detail', {id: 1}) }}">Détail d'une action</a>
         </div>
         <div>
             <h2>Mes 5 derniers trades</h2>
@@ -27,10 +27,10 @@
                 {% endfor %}
             </ul>
         </div>
-        <form id="form_search" action="{{ path('stock.search') }}" class="form-inline mb-2">
+        <form id="form_search" action="{{ path('action.search') }}" class="form-inline mb-2">
             <div class="form-group">
-                <label for="stock_search" class="mr-sm-2 sr-only">Isin</label>
-                <input id="stock_search" name="stock_search" class="form-control mr-sm-2"
+                <label for="action_search" class="mr-sm-2 sr-only">Isin</label>
+                <input id="action_search" name="action_search" class="form-control mr-sm-2"
                        type="text" required placeholder="ISIN">
             </div>
             <button type="submit" class="btn btn-info">Rechercher la valeur</button>
@@ -57,7 +57,7 @@
                 e.preventDefault();
                 let data = $(this).serialize();
                 $.ajax({
-                    url: '{{ path('stock.search') }}',
+                    url: '{{ path('action.search') }}',
                     type: 'post',
                     data: data,
                     success: function (response) {
@@ -67,7 +67,7 @@
             });
 
             $('#search').easyAutocomplete({
-                url: function(term) { return '{{ path('stock.local.search') }}'; },
+                url: function(term) { return '{{ path('action.local.search') }}'; },
                 // data: {name: $('#search').val()},
                 getValue: function (element) {
                     return element.name;
@@ -90,7 +90,7 @@
                     onClickEvent: function() {
                         let id = $('#search').getSelectedItemData().id;
                         // console.log(value);
-                        location.replace('/bourse/stock/' + id + '/detail');
+                        location.replace('/bourse/action/' + id + '/detail');
                     }
                 },
                 theme: 'bootstrap'

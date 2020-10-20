@@ -56,7 +56,7 @@ class Bien
      * @ORM\Column(type="string", length=100)
      * @Groups({"list", "show"})
      * @Assert\NotBlank()
-     * @Assert\Length(min="2", minMessage="La valeur minimum autorisée est {{ limit }}",max="100", maxMessage="La valeur maximum autorisée est {{ limit }}")
+     * @Assert\Length(min="2", minMessage="La action minimum autorisée est {{ limit }}",max="100", maxMessage="La action maximum autorisée est {{ limit }}")
      */
     private $ville;
 
@@ -64,35 +64,35 @@ class Bien
      * @ORM\Column(type="smallint", nullable=true)
      * @Groups({"list", "show"})
      */
-    private $an_construction;
+    private $anConstruction;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Groups({"show"})
      */
-    private $an_achat;
+    private $anAchat;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"show"})
      */
-    private $date_mise_vente;
+    private $dateMiseVente;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $proprio_nom;
+    private $proprioNom;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      * @Assert\Range(min=18, max=100)
      */
-    private $proprio_age;
+    private $proprioAge;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $vente_motif;
+    private $venteMotif;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Immo\Lot", mappedBy="bien")
@@ -102,22 +102,22 @@ class Bien
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $creeLe;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $vendu_le;
+    private $venduLe;
 
     /**
      * @ORM\Column(type="decimal", precision=12, scale=2, nullable=true)
      */
-    private $prix_net_vendeur;
+    private $prixNetVendeur;
 
     /**
      * @ORM\Column(type="decimal", precision=12, scale=2, nullable=true)
      */
-    private $frais_agence;
+    private $fraisAgence;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -132,8 +132,8 @@ class Bien
 
     public function __construct()
     {
-        $this->lots       = new ArrayCollection();
-        $this->created_at = new \DateTime();
+        $this->lots   = new ArrayCollection();
+        $this->creeLe = new \DateTime();
     }
 
     public function getId(): ?int
@@ -208,72 +208,72 @@ class Bien
 
     public function getAnConstruction(): ?int
     {
-        return $this->an_construction;
+        return $this->anConstruction;
     }
 
-    public function setAnConstruction(?int $an_construction): self
+    public function setAnConstruction(?int $anConstruction): self
     {
-        $this->an_construction = $an_construction;
+        $this->anConstruction = $anConstruction;
 
         return $this;
     }
 
     public function getAnAchat(): ?int
     {
-        return $this->an_achat;
+        return $this->anAchat;
     }
 
-    public function setAnAchat(?int $an_achat): self
+    public function setAnAchat(?int $anAchat): self
     {
-        $this->an_achat = $an_achat;
+        $this->anAchat = $anAchat;
 
         return $this;
     }
 
     public function getDateMiseVente(): ?\DateTimeInterface
     {
-        return $this->date_mise_vente;
+        return $this->dateMiseVente;
     }
 
-    public function setDateMiseVente(?\DateTimeInterface $date_mise_vente): self
+    public function setDateMiseVente(?\DateTimeInterface $dateMiseVente): self
     {
-        $this->date_mise_vente = $date_mise_vente;
+        $this->dateMiseVente = $dateMiseVente;
 
         return $this;
     }
 
     public function getProprioNom(): ?string
     {
-        return $this->proprio_nom;
+        return $this->proprioNom;
     }
 
-    public function setProprioNom(?string $proprio_nom): self
+    public function setProprioNom(?string $proprioNom): self
     {
-        $this->proprio_nom = $proprio_nom;
+        $this->proprioNom = $proprioNom;
 
         return $this;
     }
 
     public function getProprioAge(): ?int
     {
-        return $this->proprio_age;
+        return $this->proprioAge;
     }
 
-    public function setProprioAge(?int $proprio_age): self
+    public function setProprioAge(?int $proprioAge): self
     {
-        $this->proprio_age = $proprio_age;
+        $this->proprioAge = $proprioAge;
 
         return $this;
     }
 
     public function getVenteMotif(): ?string
     {
-        return $this->vente_motif;
+        return $this->venteMotif;
     }
 
-    public function setVenteMotif(?string $vente_motif): self
+    public function setVenteMotif(?string $venteMotif): self
     {
-        $this->vente_motif = $vente_motif;
+        $this->venteMotif = $venteMotif;
 
         return $this;
     }
@@ -309,50 +309,50 @@ class Bien
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreeLe(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->creeLe;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreeLe(\DateTimeInterface $creeLe): self
     {
-        $this->created_at = $created_at;
+        $this->creeLe = $creeLe;
 
         return $this;
     }
 
     public function getVenduLe(): ?\DateTimeInterface
     {
-        return $this->vendu_le;
+        return $this->venduLe;
     }
 
-    public function setVenduLe(?\DateTimeInterface $vendu_le): self
+    public function setVenduLe(?\DateTimeInterface $venduLe): self
     {
-        $this->vendu_le = $vendu_le;
+        $this->venduLe = $venduLe;
 
         return $this;
     }
 
     public function getPrixNetVendeur(): ?string
     {
-        return $this->prix_net_vendeur;
+        return $this->prixNetVendeur;
     }
 
-    public function setPrixNetVendeur(?string $prix_net_vendeur): self
+    public function setPrixNetVendeur(?string $prixNetVendeur): self
     {
-        $this->prix_net_vendeur = $prix_net_vendeur;
+        $this->prixNetVendeur = $prixNetVendeur;
 
         return $this;
     }
 
     public function getFraisAgence(): ?string
     {
-        return $this->frais_agence;
+        return $this->fraisAgence;
     }
 
-    public function setFraisAgence(?string $frais_agence): self
+    public function setFraisAgence(?string $fraisAgence): self
     {
-        $this->frais_agence = $frais_agence;
+        $this->fraisAgence = $fraisAgence;
 
         return $this;
     }

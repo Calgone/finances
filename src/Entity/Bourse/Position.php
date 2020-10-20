@@ -18,75 +18,75 @@ class Position
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Stock::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Action::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $stock;
+    private $action;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private $creeLe;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume;
+    private $quantite;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $unitCost;
+    private $pru;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStock(): ?Stock
+    public function getAction(): ?Action
     {
-        return $this->stock;
+        return $this->action;
     }
 
-    public function setStock(Stock $stock): self
+    public function setAction(Action $action): self
     {
-        $this->stock = $stock;
+        $this->action = $action;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreeLe(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->creeLe;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreeLe(\DateTimeInterface $creeLe): self
     {
-        $this->createdAt = $createdAt;
+        $this->creeLe = $creeLe;
 
         return $this;
     }
 
-    public function getVolume(): ?int
+    public function getQuantite(): ?int
     {
-        return $this->volume;
+        return $this->quantite;
     }
 
-    public function setVolume(int $volume): self
+    public function setQuantite(int $quantite): self
     {
-        $this->volume = $volume;
+        $this->quantite = $quantite;
 
         return $this;
     }
 
-    public function getUnitCost(): ?string
+    public function getPru(): ?string
     {
-        return $this->unitCost;
+        return $this->pru;
     }
 
-    public function setUnitCost(string $unitCost): self
+    public function setPru(string $pru): self
     {
-        $this->unitCost = $unitCost;
+        $this->pru = $pru;
 
         return $this;
     }

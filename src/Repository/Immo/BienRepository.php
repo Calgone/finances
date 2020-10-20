@@ -51,7 +51,7 @@ class BienRepository extends ServiceEntityRepository
     private function findVisibleQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->where('p.vendu_le IS NULL');
+            ->where('p.venduLe IS NULL');
 
     }
 

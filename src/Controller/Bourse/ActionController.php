@@ -2,8 +2,8 @@
 
 namespace App\Controller\Bourse;
 
-use App\Entity\Bourse\Stock;
-use App\Service\Bourse\StockService;
+use App\Entity\Bourse\Action;
+use App\Service\Bourse\ActionService;
 use App\Service\FinnhubService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,68 +17,67 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/bourse")
  * @package App\Controller\Bourse
  */
-class StockController extends AbstractController
+class ActionController extends AbstractController
 {
 //    private $projetRepo;
 //    private $em;
-    private $stockSrv;
+    private $actionSrv;
 
-    public function __construct(StockService $srv) //EntityManagerInterface $em)
+    public function __construct(ActionService $srv) //EntityManagerInterface $em)
     {
 //        $this->projetRepo = $projetRepo;
 //        $this->em = $em;
-//        $this->stockSrv = new StockService($this->em);
-        $this->stockSrv = $srv;
+//        $this->actionSrv = new StockService($this->em);
+        $this->actionSrv = $srv;
     }
 
     /**
-     * @Route("/stock", name="bourse_stock")
+     * @Route("/action", name="action.index")
      */
     public function index()
     {
-        return $this->render('bourse/stock/index.html.twig', [
+        return $this->render('bourse/action/index.html.twig', [
             'controller_name' => 'StockController',
         ]);
     }
 
     /**
-     * @Route("/stock/{id}/detail", name="stock.detail")
+     * @Route("/action/{id}/detail", name="action.detail")
      * @param Request $request
      * @return Response
      */
-    public function stockDetail(Request $request)
+    public function actionDetail(Request $request)
     {
         $id    = $request->get('id');
-        $stock = $this->stockSrv->getCurrentStock($id);
-//        dd($stock);
-        $this->stockSrv->setStock($stock);
-//        $stockOrderHistory = $this->stockSrv->getStockOrderHistory();
-        $stockPosition = $this->stockSrv->getStockPosition();
-        return $this->render('bourse/stock/detail.html.twig', [
-                'stock'         => $stock,
+        $action = $this->actionSrv->getActionCote($id);
+//        dd($action);
+        $this->actionSrv->setAction($action);
+//        $stockOrderHistory = $this->actionSrv->getStockOrderHistory();
+        $actionPosition = $this->actionSrv->getActionPosition();
+        return $this->render('bourse/action/detail.html.twig', [
+                'action'         => $action,
 //                'stockOrderHistory' => $stockOrderHistory,
-                'stockPosition' => $stockPosition
+                'actionPosition' => $actionPosition
             ]
         );
     }
 
     /**
-     * @Route("/stock/{id}/json", name="stock.json")
+     * @Route("/action/{id}/json", name="action.json")
      * @param Request $request
-     * @param Stock $stock
+     * @param Action $stock
      * @return Response
      * @throws \Exception
      */
-    public function stockJson(Request $request, Stock $stock)
+    public function actionJson(Request $request, Action $stock)
     {
-
-//        $stockSrv = new StockService($this->em);
+//        $actionSrv = new StockService($this->em);
 
         $method   = $request->request->get('method');
-        $res      = $this->stockSrv->$method($stock);
+        $res      = $this->actionSrv->$method($stock);
         $response = ['message' => 'ok', 'data' => $res];
-//        dd($stock);
-//        $this->em->persist($stock);
+//        dd($action);
+//        $this->em->persist($action);
 //        $this->em->flush();
         $serializer = $this->get('serializer');
         $stockJson  = $serializer->serialize($response, 'json',
@@ -93,20 +92,20 @@ class StockController extends AbstractController
     }
 
     /**
-     * Recherche une valeur via l'API et l'enregistre en base
-     * @Route("/stock/search", name="stock.search")
+     * Recherche une action via l'API et l'enregistre en base
+     * @Route("/action/search", name="action.search")
      * @param Request $request
      * @return Response
      * @throws \Exception
      */
-    public function stockSearch(Request $request)
+    public function actionSearch(Request $request)
     {
-        $isin = trim($request->request->get('stock_search'));
+        $isin = trim($request->request->get('action_search'));
 //        dd($isin);
-        $stock = new Stock();
-        $stock->setIsin($isin);
-        $stock        = $this->stockSrv->getProfile($stock);
-        $response     = ['message' => 'ok', 'data' => $stock];
+        $action = new Action();
+        $action->setIsin($isin);
+        $action        = $this->actionSrv->getProfile($action);
+        $response     = ['message' => 'ok', 'data' => $action];
         $serializer   = $this->get('serializer');
         $responseJson = $serializer->serialize($response, 'json',
             [
@@ -120,8 +119,8 @@ class StockController extends AbstractController
     }
 
     /**
-     * Recherche une valeur dans la base locale
-     * @Route("/stock/local_search", name="stock.local.search")
+     * Recherche une action dans la base locale
+     * @Route("/action/local_search", name="action.local.search")
      * @param Request $request
      * @return JsonResponse
      */
@@ -129,7 +128,7 @@ class StockController extends AbstractController
     {
         $term = trim($request->request->get('term'));
 //        dd($request->request->get('phrase'));
-        $result = $this->stockSrv->searchLocalStock($term);
+        $result = $this->actionSrv->findActionLocal($term);
 
 //        dd($result);
         $i        = 0;
@@ -145,11 +144,11 @@ class StockController extends AbstractController
 
     /**
      * Renvoie le template du formulaire pour créer une alerte
-     * @Route("/stock/alert-form", name="stock.alert-form")
+     * @Route("/action/alert-form", name="action.alert-form")
      */
-    public function stockAlert()
+    public function actionAlerte()
     {
-        return $this->render('bourse/stock/alert.html.twig', [
+        return $this->render('bourse/action/alert.html.twig', [
             'controller_name' => 'StockController',
         ]);
     }

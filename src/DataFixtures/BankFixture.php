@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Bank\Bank;
+use App\Entity\Banque\Banque;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -14,18 +14,18 @@ class BankFixture extends Fixture
         // $manager->persist($product);
         $faker = Faker\Factory::create('fr_FR');
 
-        $bourso = new Bank();
-        $bourso->setName('Boursorama')
-            ->setAddress('44 rue Traversière, CS 80134')
+        $bourso = new Banque();
+        $bourso->setNom('Boursorama')
+            ->setAdresse('44 rue Traversière, CS 80134')
             ->setCp('92772 ')
-            ->setCity('BOULOGNE BILLANCOURT CEDEX')
-            ->setCountry('France');
-        $bnp = new Bank();
-        $bnp->setName('BNP Paribas')
-            ->setAddress('16, bd des Italiens')
-            ->setCountry('France')
+            ->setVille('BOULOGNE BILLANCOURT CEDEX')
+            ->setPays('France');
+        $bnp = new Banque();
+        $bnp->setNom('BNP Paribas')
+            ->setAdresse('16, bd des Italiens')
+            ->setPays('France')
             ->setCp('75009')
-            ->setCity('PARIS');
+            ->setVille('PARIS');
         $manager->persist($bnp);
         $manager->persist($bourso);
         $manager->flush();

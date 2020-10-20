@@ -22,7 +22,7 @@ class ProjetFixtures extends Fixture
             $projet = new Projet();
             $netVendeur = random_int(50000, 150000);
             $loyerCible = random_int(400, 850);
-            $projet->setNetVendeur($netVendeur)
+            $projet->setPrixNetVendeur($netVendeur)
                 ->setFraisAgence($netVendeur * 0.1)
                 ->setFraisNotaire($netVendeur * 0.08)
                 ->setTravaux(random_int(0, 30000))
@@ -31,14 +31,14 @@ class ProjetFixtures extends Fixture
                 ->setCreditFraisDossier(random_int(1000,2000))
                 ->setCreditGarantie(random_int(0, $netVendeur * 0.02))
                 ->setCreditTaux(random_int(10, 20)  / 10)
-                ->setCreditTauxAss(0.36)
+                ->setCreditTauxAssurance(0.36)
                 ->setCreditDureeMois(240)
                 ->setCreditDateDebut(new \DateTime('first day of next month'))
                 ->setLoyerCibleHc($loyerCible)
                 ->setTaxeFonciere($loyerCible * 0.9)
-                ->setChargesNonRecup(random_int(0,1000))
+                ->setChargeNonRecuperable(random_int(0,1000))
                 ->setCoutAssuranceBien(random_int(50,200))
-                ->setCoutTravauxEntretiens(random_int(0,500))
+                ->setCoutTravauxEntretien(random_int(0,500))
                 ->setCoutComptable(random_int(0,300))
                 ->setCoutGestionLocative($loyerCible * 0.1)
                 ->setCoutAutre(random_int(0,500));

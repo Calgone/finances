@@ -2,9 +2,9 @@
 
 namespace App\Controller\Bourse;
 
-use App\Entity\Bourse\Order;
+use App\Entity\Bourse\Ordre;
 use App\Entity\Bourse\Position;
-use App\Entity\Bourse\Stock;
+use App\Entity\Bourse\Action;
 use App\Form\Bourse\OrderType;
 use App\Service\DataTablesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller\Bourse
  * @Route("/bourse")
  */
-class OrderController extends AbstractController
+class OrdreController extends AbstractController
 {
     protected $em;
     protected $ordreRepo;
@@ -29,7 +29,7 @@ class OrderController extends AbstractController
     {
 //        dd($this->container);
         $this->em        = $em;
-        $this->ordreRepo = $this->em->getRepository('App:Bourse\Order');
+        $this->ordreRepo = $this->em->getRepository('Ordre');
     }
 
     /**
@@ -65,15 +65,15 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/stock/{id}/order/new", name="order.new")
+     * @Route("/action/{id}/order/new", name="order.new")
      * @param Request $request
-     * @param Stock $stock
+     * @param Action $action
      * @return Response|RedirectResponse
      */
-    public function new(Request $request, Stock $stock)
+    public function new(Request $request, Action $action)
     {
-        $order = new Order();
-        $order->setStock($stock);
+        $order = new Ordre();
+        $order->setAction($action);
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,14 +81,14 @@ class OrderController extends AbstractController
 
             if ($order->getDirection() === 'buy') {
                 $position = new Position();
-                $position->setStock($stock);
+                $position->setAction($action);
                 $position->setCreatedAt(new \DateTime());
-                $position->setUnitCost($order->getQuotation());
-                $position->setVolume($order->getVolume());
+                $position->setPru($order->getCours());
+                $position->setQuantite($order->getQuantite());
                 $this->em->persist($position);
             } else { // 'sell'
                 $positionRepo = $this->em->getRepository(Position::class);
-                $position = $positionRepo->findOneBy(['stock' => $stock]);
+                $position = $positionRepo->findOneBy(['action' => $action]);
                 $this->em->remove($position);
             }
 

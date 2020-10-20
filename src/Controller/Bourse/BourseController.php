@@ -2,8 +2,8 @@
 
 namespace App\Controller\Bourse;
 
-use App\Entity\Bourse\Order;
-use App\Entity\Bourse\Stock;
+use App\Entity\Bourse\Ordre;
+use App\Entity\Bourse\Action;
 use App\Entity\Bourse\Position;
 use App\Service\Bourse\BourseService;
 use App\Service\DataTablesService;
@@ -38,7 +38,7 @@ class BourseController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $lastOrders = $this->getDoctrine()
-            ->getRepository(Order::class)
+            ->getRepository(Ordre::class)
             ->findLastTrades();
         return $this->render('bourse/bourse/index.html.twig', [
             'controller_name' => 'BourseController',
@@ -92,11 +92,11 @@ class BourseController extends AbstractController
         $i            = 0;
         $fmt          = new \NumberFormatter('fr_FR', \NumberFormatter::CURRENCY);
         foreach ($objects as $key => $position) {
-            $url  = $this->generateUrl('stock.detail',
-                ['id' => $position->getStock()->getId()]);
-            $href = '<a href="' . $url . '">' . $position->getStock()->getName() . '</a>';
+            $url  = $this->generateUrl('action.detail',
+                ['id' => $position->getAction()->getId()]);
+            $href = '<a href="' . $url . '">' . $position->getAction()->getName() . '</a>';
 //            dd($position->getStock()->getQuotes()[0]->getCurrentPrice());
-            $currentPrice       = $position->getStock()->getQuotes()[0]->getCurrentPrice();
+            $currentPrice       = $position->getAction()->getCotes()[0]->getCurrentPrice();
             $currentAmount      = $currentPrice * $position->getVolume();
             $initialAmount      = $position->getUnitCost() * $position->getVolume();
             $capitalGain        = $currentAmount - $initialAmount;
@@ -104,7 +104,7 @@ class BourseController extends AbstractController
 
             $responseData[$i]['name']               = $href;
             $responseData[$i]['volume']             = $position->getVolume();
-            $responseData[$i]['unitCost']           = $fmt->formatCurrency($position->getUnitCost(), "EUR");
+            $responseData[$i]['pru']           = $fmt->formatCurrency($position->getUnitCost(), "EUR");
             $responseData[$i]['quote']              = $fmt->formatCurrency($currentPrice, "EUR");
             $responseData[$i]['amount']             = $fmt->formatCurrency($currentAmount, "EUR");
             $responseData[$i]['capitalGain']        = $fmt->formatCurrency($capitalGain, "EUR");

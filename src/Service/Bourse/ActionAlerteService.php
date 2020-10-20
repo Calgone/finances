@@ -8,7 +8,7 @@ use App\Entity\Bourse\Position;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
-class StockAlertService extends StockService
+class ActionAlerteService extends ActionService
 {
 
     public function __construct(EntityManagerInterface $em, MailerInterface $mailer)

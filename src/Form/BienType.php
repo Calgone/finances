@@ -21,7 +21,7 @@ class BienType extends AbstractType
             ->add('proprio_nom')
             ->add('proprio_age')
             ->add('vente_motif')
-//            ->add('created_at')
+//            ->add('creeLe')
             ->add('vendu_le')
             ->add('prix_net_vendeur')
             ->add('frais_agence')

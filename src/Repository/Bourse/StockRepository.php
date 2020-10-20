@@ -2,23 +2,23 @@
 
 namespace App\Repository\Bourse;
 
-use App\Entity\Bourse\Stock;
+use App\Entity\Bourse\Action;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Stock|null find($id, $lockMode = null, $lockVersion = null)
- * @method Stock|null findOneBy(array $criteria, array $orderBy = null)
- * @method Stock[]    findAll()
- * @method Stock[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Action|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Action|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Action[]    findAll()
+ * @method Action[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StockRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Stock::class);
+        parent::__construct($registry, Action::class);
     }
 
     // /**
@@ -51,24 +51,24 @@ class StockRepository extends ServiceEntityRepository
     */
 
     /**
-     * Renvoie le Stock avec la dernière quotation (quote)
+     * Renvoie l'action avec la dernière cote (quote)
      * @param int $id
      * @return int|mixed|string
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getCurrentStock(int $id): Stock
+    public function getActionCote(int $id): Action
     {
-        $query = $this->createQueryBuilder('stock');
+        $query = $this->createQueryBuilder('action');
         $query
-            ->leftJoin('stock.quotes', 'quotes')
-            ->leftJoin('App\Entity\Bourse\Quote', 'last_quote',
+            ->leftJoin('action.cotes', 'cotes')
+            ->leftJoin('App\Entity\Bourse\Cote', 'last_cote',
                 'WITH',
-                'stock=last_quote.stock AND quotes.id < last_quote.id')
-            ->where('last_quote.id IS NULL')
-            ->andWhere('stock.id = :id')
+                'action=last_cote.action AND cotes.id < last_cote.id')
+            ->where('last_cote.id IS NULL')
+            ->andWhere('action.id = :id')
             ->setParameter('id', $id)
-            ->select('stock', 'quotes');
+            ->select('action', 'cotes');
         return $query->getQuery()->getSingleResult();
     }
 }

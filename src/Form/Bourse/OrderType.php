@@ -2,7 +2,7 @@
 
 namespace App\Form\Bourse;
 
-use App\Entity\Bourse\Order;
+use App\Entity\Bourse\Ordre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,7 +34,7 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Order::class,
+            'data_class' => Ordre::class,
         ]);
     }
 }

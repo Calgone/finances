@@ -6,35 +6,35 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-10">
-                <h2>Fiche valeur {{ stock.name }}
+                <h2>Fiche valeur {{ action.nom }}
                     <button class="btn btn-info maj" data-method="getProfile"
                             title="Mettre à jour la fiche valeur">
                         <i class="fas fa-sync"></i>
                     </button>
                 </h2>
-                {{ stock.isin }} {{ stock.ticker }}
+                {{ action.isin }} {{ action.ticker }}
 
             </div>
             <div class="col-md-2">
-                <img src="{{ stock.logo }}" alt="logo">
+                <img src="{{ action.logo }}" alt="logo">
             </div>
         </div>
 
         <br>
-        IPO: {{ stock.ipo|date('d/m/Y') }}
+        IPO: {{ action.ipo|date('d/m/Y') }}
         <br>
-        Valorisation: {{ stock.marketCap|number_format }} MEur
+        Valorisation: {{ action.capitalisation|number_format }} MEur
         <br>
-        Actions en circulation: {{ stock.shareOutstanding|number_format }}
+        Actions en circulation: {{ action.actionsEnCirculation|number_format }}
         <br>
-        Site internet : <a target="_blank" href="{{ stock.webUrl }}">{{ stock.webUrl }}</a>
+        Site internet : <a target="_blank" href="{{ action.webUrl }}">{{ action.webUrl }}</a>
         <br>
-        Lien Boursorama : <a target="_blank" href="{{ stock.lienBoursorama }}">Lien</a>
+        Lien Boursorama : <a target="_blank" href="{{ action.lienBoursorama }}">Lien</a>
         <hr>
         <div class="row">
-            {% if stock.quotes[0] is defined %}
+            {% if action.cotes[0] is defined %}
                 <div class="col-md-6">
-                    <h5>Cours au {{ stock.quotes[0].priceAt|date }}
+                    <h5>Cours au {{ action.cotes[0].priceAt|date }}
                         <button class="btn btn-sm btn-light maj" data-method="getQuote"
                                 title="Récupérer le cours">
                             <i class="fas fa-sync"></i>
@@ -45,10 +45,10 @@
                         </button>
                     </h5>
                     <br>
-                    <b style="font-size: 2em;">{{ stock.quotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
+                    <b style="font-size: 2em;">{{ action.cotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
                     <br>
                     <span style="font-size:1.5em; color: {{ stock.quotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
-                    {{ stock.quotes[0].getPreviousPercent }} %
+                    {{ action.cotes[0].getPreviousPercent }} %
                 </span>
                 </div>
                 <div class="col-md-6">
@@ -58,16 +58,16 @@
                             <th>Cloture veille</th>
                         </tr>
                         <tr>
-                            <td>{{ stock.quotes[0].openPrice|format_currency('EUR') }}</td>
-                            <td>{{ stock.quotes[0].previousClosePrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].openPrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].previousClosePrice|format_currency('EUR') }}</td>
                         </tr>
                         <tr>
                             <th>+ Bas</th>
                             <th>+ Haut</th>
                         </tr>
                         <tr>
-                            <td>{{ stock.quotes[0].lowPrice|format_currency('EUR') }}</td>
-                            <td>{{ stock.quotes[0].highPrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].lowPrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].highPrice|format_currency('EUR') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -92,14 +92,14 @@
             <i class="fas fa-list-ul"></i> Récupérer le résumé
         </button>
 
-        <a href="{{ path('order.new', {id: stock.id}) }}">Passer un ordre</a>
+        <a href="{{ path('order.new', {id: action.id}) }}">Passer un ordre</a>
         <div id="div_res"></div>
         <table class="table table-sm" id="table_res"></table>
         <div>
             <h5>Historique des ordres</h5>
             <ul>
-                {% for order in stock.orders %}
-                    <li>{{ order.date|date('d/m/y') }}</li>
+                {% for ordre in action.ordres %}
+                    <li>{{ ordre.date|date('d/m/y') }}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -138,12 +138,12 @@
                 console.log($(this).data('method'));
                 getInfo($(this).data('method'));
             });
-            $('.stock-alert').click(function(){
+            $('.action-alert').click(function(){
                 // let userid = $(this).data('id');
                 $.ajax({
-                    url: '{{ path('stock.alert-form', {id: stock.id}) }}',
+                    url: '{{ path('action.alert-form', {id: action.id}) }}',
                     type: 'post',
-                    data: {stockId: {{ stock.id }}},
+                    data: {stockId: {{ action.id }}},
                     success: function(response){
                         // Add response in Modal body
                         $('.modal-body').html(response);
@@ -156,7 +156,7 @@
 
         function getInfo(method) {
             $.ajax({
-                url: '{{ path('stock.json', {id: stock.id}) }}',
+                url: '{{ path('action.json', {id: action.id}) }}',
                 type: 'post',
                 data: {method: method},
                 cache: false,

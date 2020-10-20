@@ -62,7 +62,7 @@ class FinanceMathPHP
      *   pmt(0.035/12, 5*12, 265000, 265000/2, false)
      *
      * The weekly payment into a savings account with 1% interest rate and current
-     * balance of $1500 needed to reach $10000 after 3 years:
+     * solde of $1500 needed to reach $10000 after 3 years:
      *   pmt(0.01/52, 3*52, -1500, 10000, false)
      * The present_value is negative indicating money put into the savings account,
      * whereas future_value is positive, indicating money that will be withdrawn from

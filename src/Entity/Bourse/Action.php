@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=StockRepository::class)
  */
-class Stock // == stock
+class Action // == action
 {
     /**
      * @ORM\Id()
@@ -22,7 +22,7 @@ class Stock // == stock
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $nom;
 
     /**
      * @ORM\Column(type="string", length=12)
@@ -47,12 +47,12 @@ class Stock // == stock
     /**
      * @ORM\Column(type="decimal", precision=18, scale=4)
      */
-    private $marketCap;
+    private $capitalisation; // Market cap
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $shareOutstanding;
+    private $actionsEnCirculation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -65,19 +65,19 @@ class Stock // == stock
     private $tel;
 
     /**
-     * @ORM\OneToMany(targetEntity=Quote::class, mappedBy="stock")
+     * @ORM\OneToMany(targetEntity=Cote::class, mappedBy="action")
      */
-    private $quotes;
+    private $cotes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="stock")
+     * @ORM\OneToMany(targetEntity=Ordre::class, mappedBy="action")
      */
-    private $orders;
+    private $ordres;
 
     public function __construct()
     {
-        $this->quotes = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->cotes  = new ArrayCollection();
+        $this->ordres = new ArrayCollection();
     } // == symbol
 
     public function getId(): ?int
@@ -85,14 +85,14 @@ class Stock // == stock
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNom(): ?string
     {
-        return $this->name;
+        return $this->nom;
     }
 
-    public function setName(string $name): self
+    public function setNom(string $nom): self
     {
-        $this->name = $name;
+        $this->nom = $nom;
 
         return $this;
     }
@@ -145,26 +145,26 @@ class Stock // == stock
         return $this;
     }
 
-    public function getMarketCap(): ?string
+    public function getCapitalisation(): ?string
     {
-        return $this->marketCap;
+        return $this->capitalisation;
     }
 
-    public function setMarketCap(string $marketCap): self
+    public function setCapitalisation(string $capitalisation): self
     {
-        $this->marketCap = $marketCap;
+        $this->capitalisation = $capitalisation;
 
         return $this;
     }
 
-    public function getShareOutstanding(): ?int
+    public function getActionsEnCirculation(): ?int
     {
-        return $this->shareOutstanding;
+        return $this->actionsEnCirculation;
     }
 
-    public function setShareOutstanding(int $shareOutstanding): self
+    public function setActionsEnCirculation(int $actionsEnCirculation): self
     {
-        $this->shareOutstanding = $shareOutstanding;
+        $this->actionsEnCirculation = $actionsEnCirculation;
 
         return $this;
     }
@@ -194,30 +194,30 @@ class Stock // == stock
     }
 
     /**
-     * @return Collection|Quote[]
+     * @return Collection|Cote[]
      */
-    public function getQuotes(): Collection
+    public function getCotes(): Collection
     {
-        return $this->quotes;
+        return $this->cotes;
     }
 
-    public function addQuote(Quote $quote): self
+    public function addCote(Cote $cote): self
     {
-        if (!$this->quotes->contains($quote)) {
-            $this->quotes[] = $quote;
-            $quote->setStock($this);
+        if (!$this->cotes->contains($cote)) {
+            $this->cotes[] = $cote;
+            $cote->setAction($this);
         }
 
         return $this;
     }
 
-    public function removeQuote(Quote $quote): self
+    public function removeCote(Cote $cote): self
     {
-        if ($this->quotes->contains($quote)) {
-            $this->quotes->removeElement($quote);
+        if ($this->cotes->contains($cote)) {
+            $this->cotes->removeElement($cote);
             // set the owning side to null (unless already changed)
-            if ($quote->getStock() === $this) {
-                $quote->setStock(null);
+            if ($cote->getAction() === $this) {
+                $cote->setAction(null);
             }
         }
 
@@ -231,30 +231,30 @@ class Stock // == stock
     }
 
     /**
-     * @return Collection|Order[]
+     * @return Collection|Ordre[]
      */
-    public function getOrders(): Collection
+    public function getOrdres(): Collection
     {
-        return $this->orders;
+        return $this->ordres;
     }
 
-    public function addOrder(Order $order): self
+    public function addOrder(Ordre $order): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setStock($this);
+        if (!$this->ordres->contains($order)) {
+            $this->ordres[] = $order;
+            $order->setAction($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    public function removeOrder(Ordre $order): self
     {
-        if ($this->orders->contains($order)) {
-            $this->orders->removeElement($order);
+        if ($this->ordres->contains($order)) {
+            $this->ordres->removeElement($order);
             // set the owning side to null (unless already changed)
-            if ($order->getStock() === $this) {
-                $order->setStock(null);
+            if ($order->getAction() === $this) {
+                $order->setAction(null);
             }
         }
 

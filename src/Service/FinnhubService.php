@@ -4,8 +4,8 @@
 namespace App\Service;
 
 
-use App\Entity\Bourse\Quote;
-use App\Entity\Bourse\Stock;
+use App\Entity\Bourse\Cote;
+use App\Entity\Bourse\Action;
 
 class FinnhubService extends ApiService
 {
@@ -70,7 +70,7 @@ class FinnhubService extends ApiService
      */
     public function getBasicFinancial(string $symbol)
     {
-        $this->setUrl('stock/metric', ['symbol' => $symbol]);
+        $this->setUrl('action/metric', ['symbol' => $symbol]);
         $result = $this->exec();
         return json_decode($result);
     }
@@ -82,7 +82,7 @@ class FinnhubService extends ApiService
      */
     public function getExchangeSymbols(string $exchange)
     {
-        $this->setUrl('stock/symbol', ['exchange', $exchange]);
+        $this->setUrl('action/symbol', ['exchange', $exchange]);
         $result = $this->exec();
         dd($result);
     }
