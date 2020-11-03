@@ -34,20 +34,20 @@
         <div class="row">
             {% if action.cotes[0] is defined %}
                 <div class="col-md-6">
-                    <h5>Cours au {{ action.cotes[0].priceAt|date }}
-                        <button class="btn btn-sm btn-light maj" data-method="getQuote"
+                    <h5>Cours au {{ action.cotes[0].creeLe|date }}
+                        <button class="btn btn-sm btn-light maj" data-method="getCote"
                                 title="Récupérer le cours">
                             <i class="fas fa-sync"></i>
                         </button>
-                        <button class="btn btn-sm btn-light stock-alert"
+                        <button class="btn btn-sm btn-light action-alerte"
                                 title="Créer une alerte">
                             <i class="fas fa-bell"></i>
                         </button>
                     </h5>
                     <br>
-                    <b style="font-size: 2em;">{{ action.cotes[0].currentPrice|format_currency('EUR', {fraction_digit: 4}) }}</b>
+                    <b style="font-size: 2em;">{{ action.cotes[0].prix|format_currency('EUR', {fraction_digit: 4}) }}</b>
                     <br>
-                    <span style="font-size:1.5em; color: {{ stock.quotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
+                    <span style="font-size:1.5em; color: {{ action.cotes[0].getPreviousPercent > 0 ? '#2cc357' : '#f11c3a' }};">
                     {{ action.cotes[0].getPreviousPercent }} %
                 </span>
                 </div>
@@ -58,23 +58,23 @@
                             <th>Cloture veille</th>
                         </tr>
                         <tr>
-                            <td>{{ action.cotes[0].openPrice|format_currency('EUR') }}</td>
-                            <td>{{ action.cotes[0].previousClosePrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].prixOuverture|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].prixClotureVeille|format_currency('EUR') }}</td>
                         </tr>
                         <tr>
                             <th>+ Bas</th>
                             <th>+ Haut</th>
                         </tr>
                         <tr>
-                            <td>{{ action.cotes[0].lowPrice|format_currency('EUR') }}</td>
-                            <td>{{ action.cotes[0].highPrice|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].prixMin|format_currency('EUR') }}</td>
+                            <td>{{ action.cotes[0].prixMax|format_currency('EUR') }}</td>
                         </tr>
                     </table>
                 </div>
             {% else %}
                 <div class="col-md-12">
                     Aucun cours récupéré pour cette action.
-                    <button class="btn btn-sm btn-light maj" data-method="getQuote"
+                    <button class="btn btn-sm btn-light maj" data-method="getCote"
                             title="Récupérer le cours">
                         <i class="fas fa-sync"></i>
                     </button>
@@ -97,11 +97,15 @@
         <table class="table table-sm" id="table_res"></table>
         <div>
             <h5>Historique des ordres</h5>
-            <ul>
-                {% for ordre in action.ordres %}
-                    <li>{{ ordre.date|date('d/m/y') }}</li>
-                {% endfor %}
-            </ul>
+            {% if action.ordres is empty %}
+                <small>Aucun ordre passé sur cette valeur</small>
+            {% else %}
+                <ul>
+                    {% for ordre in action.ordres %}
+                        <li>{{ ordre.date|date('d/m/y') }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
     <!--
@@ -138,13 +142,13 @@
                 console.log($(this).data('method'));
                 getInfo($(this).data('method'));
             });
-            $('.action-alert').click(function(){
+            $('.action-alerte').click(function () {
                 // let userid = $(this).data('id');
                 $.ajax({
                     url: '{{ path('action.alert-form', {id: action.id}) }}',
                     type: 'post',
                     data: {stockId: {{ action.id }}},
-                    success: function(response){
+                    success: function (response) {
                         // Add response in Modal body
                         $('.modal-body').html(response);
                         // Display Modal
@@ -176,7 +180,7 @@
                             buildKeyValueTable(response.data.metric, '#table_res');
                             break;
                         case 'getProfile':
-                        case 'getQuote':
+                        case 'getCote':
                         default:
                             location.reload();
                     }

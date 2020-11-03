@@ -2,15 +2,15 @@
 
 namespace App\Entity\Bourse;
 
-use App\Repository\Bourse\StockRepository;
+use App\Repository\Bourse\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=StockRepository::class)
+ * @ORM\Entity(repositoryClass=ActionRepository::class)
  */
-class Action // == action
+class Action // == stock
 {
     /**
      * @ORM\Id()

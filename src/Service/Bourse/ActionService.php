@@ -16,7 +16,7 @@ class ActionService
     protected $em;
     protected $mailer;
     protected $fhSrv;
-    protected $stockRepo;
+    protected $actionRepo;
 
     /**
      * @var Action
@@ -28,7 +28,7 @@ class ActionService
         $this->em        = $em;
         $this->mailer    = $mailer;
         $this->fhSrv     = new FinnhubService();
-        $this->stockRepo = $this->em->getRepository(Action::class);
+        $this->actionRepo = $this->em->getRepository(Action::class);
     }
 
     public function setAction(Action $action)
@@ -94,15 +94,14 @@ class ActionService
 
     public function getActionCote(int $id)
     {
-        return $this->stockRepo->getActionCote($id);
+        return $this->actionRepo->getActionCote($id);
     }
 
 
     public function findActionLocal(string $term): array
     {
-        $repo  = $this->em->getRepository("Action");
-        $query = $repo->createQueryBuilder('s')
-            ->where('s.name LIKE :term')
+        $query = $this->actionRepo->createQueryBuilder('s')
+            ->where('s.nom LIKE :term')
             ->orWhere('s.isin LIKE :term')
             ->orWhere('s.ticker LIKE :term')
             ->setParameter('term', '%' . $term . '%')

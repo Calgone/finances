@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Action[]    findAll()
  * @method Action[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class StockRepository extends ServiceEntityRepository
+class ActionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -22,7 +22,7 @@ class StockRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Stock[] Returns an array of Stock objects
+    //  * @return Action[] Returns an array of Action objects
     //  */
     /*
     public function findByExampleField($value)
@@ -39,7 +39,7 @@ class StockRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Stock
+    public function findOneBySomeField($value): ?Action
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

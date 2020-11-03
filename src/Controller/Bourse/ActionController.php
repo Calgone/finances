@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class StockController
+ * Class ActionController
  * @Route("/bourse")
  * @package App\Controller\Bourse
  */
@@ -27,7 +27,7 @@ class ActionController extends AbstractController
     {
 //        $this->projetRepo = $projetRepo;
 //        $this->em = $em;
-//        $this->actionSrv = new StockService($this->em);
+//        $this->actionSrv = new ActionService($this->em);
         $this->actionSrv = $srv;
     }
 
@@ -37,7 +37,7 @@ class ActionController extends AbstractController
     public function index()
     {
         return $this->render('bourse/action/index.html.twig', [
-            'controller_name' => 'StockController',
+            'controller_name' => 'ActionController',
         ]);
     }
 
@@ -65,28 +65,28 @@ class ActionController extends AbstractController
     /**
      * @Route("/action/{id}/json", name="action.json")
      * @param Request $request
-     * @param Action $stock
+     * @param Action $action
      * @return Response
      * @throws \Exception
      */
-    public function actionJson(Request $request, Action $stock)
+    public function actionJson(Request $request, Action $action)
     {
 //        $actionSrv = new StockService($this->em);
 
         $method   = $request->request->get('method');
-        $res      = $this->actionSrv->$method($stock);
+        $res      = $this->actionSrv->$method($action);
         $response = ['message' => 'ok', 'data' => $res];
 //        dd($action);
 //        $this->em->persist($action);
 //        $this->em->flush();
         $serializer = $this->get('serializer');
-        $stockJson  = $serializer->serialize($response, 'json',
+        $actionJson  = $serializer->serialize($response, 'json',
             [
                 'circular_reference_handler' => function ($object) {
                     return $object->getId();
                 }
             ]);
-        return new Response($stockJson, 200, [
+        return new Response($actionJson, 200, [
             'Content-Type' => 'application/json'
         ]);
     }
@@ -135,7 +135,7 @@ class ActionController extends AbstractController
         $response = [];
         foreach ($result as $k => $v) {
             $response[$i]['id']   = $v->getId();
-            $response[$i]['name'] = $v->getName();
+            $response[$i]['nom'] = $v->getNom();
         }
 
 //        $response = [['name' => 'abc'], ['name' => 'def'], ['name' => 'ghi']];
@@ -146,10 +146,11 @@ class ActionController extends AbstractController
      * Renvoie le template du formulaire pour créer une alerte
      * @Route("/action/alert-form", name="action.alert-form")
      */
-    public function actionAlerte()
+    public function actionAlerteForm()
     {
         return $this->render('bourse/action/alert.html.twig', [
-            'controller_name' => 'StockController',
+            'controller_name' => 'ActionController',
         ]);
     }
+
 }
