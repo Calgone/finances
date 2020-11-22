@@ -1,1 +1,48 @@
-<h3>Alertes</h3>
+<div id="alert-form-1">
+    <h3>Sélectionnez le type d'alerte</h3>
+    {% for modele in alerteModeles %}
+        <div class="form-check">
+            <input type="radio" class="form-check-input" name="alerteModele" id="alerteModele{{ modele.id }}">
+            <label for="alerteModele{{ modele.id }}" class="form-chek">
+                {{ modele.titre }}
+            </label>
+        </div>
+
+    {% endfor %}
+</div>
+
+<div id="alert-form-2" class="collapse">
+    <form action="">
+        <input type="hidden" name="alerteModele" id="alerteModele">
+        <div class="form-group">
+            <label for="seuilBas">Seuil bas</label>
+            <input type="text" name="seuilBas" id="seuilBas" class="form-control">
+            <label for="seuilHaut">Seuil haut</label>
+            <input type="text" name="seuilHaut" id="seuilHaut" class="form-control">
+        </div>
+        <div class="form-group">
+            <select name="methode" id="methode" class="form-control">
+                <option value="hausse">Hausse</option>
+                <option value="baisse">Baisse</option>
+                <option value="pourcentage">Pourcentage</option>
+                <option value="bornes">Bornes</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="referentiel">Référentiel</label>
+            <input type="text" id="referentiel" name="referentiel" class="form-control">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#alert-form-1').collapse();
+        $('input[name="alerteModele"]').click(function () {
+            $('#alerteModele').val($(this).val());
+            // $('#alert-form-1').addClass('d-none');
+            // $('#alert-form-2').removeClass('d-none');
+            $('#alert-form-1').collapse('hide');
+            $('#alert-form-2').collapse('show');
+        });
+    });
+</script>

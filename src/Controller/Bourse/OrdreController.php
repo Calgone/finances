@@ -29,7 +29,7 @@ class OrdreController extends AbstractController
     {
 //        dd($this->container);
         $this->em        = $em;
-        $this->ordreRepo = $this->em->getRepository('Ordre');
+        $this->ordreRepo = $this->em->getRepository(Ordre::class);
     }
 
     /**
@@ -38,7 +38,7 @@ class OrdreController extends AbstractController
     public function index()
     {
         return $this->render('bourse/ordre/index.html.twig', [
-            'controller_name' => 'OrderController',
+            'controller_name' => 'OrdreController',
         ]);
     }
 

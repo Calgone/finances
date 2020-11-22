@@ -148,8 +148,11 @@ class ActionController extends AbstractController
      */
     public function actionAlerteForm()
     {
+        $alerteModeles = $this->actionSrv->getAllAlerteModeles();
+
         return $this->render('bourse/action/alert.html.twig', [
             'controller_name' => 'ActionController',
+            'alerteModeles' => $alerteModeles,
         ]);
     }
 

@@ -3,9 +3,11 @@
 
 namespace App\Service\Bourse;
 
+use App\Entity\Bourse\AlerteModele;
 use App\Entity\Bourse\Position;
 use App\Entity\Bourse\Cote;
 use App\Entity\Bourse\Action;
+use App\Repository\Bourse\AlerteModeleRepository;
 use App\Service\FinnhubService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -22,13 +24,18 @@ class ActionService
      * @var Action
      */
     private $action;
+    /**
+     * @var AlerteModeleRepository|\Doctrine\Persistence\ObjectRepository
+     */
+    private $alerteModeleRepo;
 
     public function __construct(EntityManagerInterface $em, MailerInterface $mailer)
     {
-        $this->em        = $em;
-        $this->mailer    = $mailer;
-        $this->fhSrv     = new FinnhubService();
-        $this->actionRepo = $this->em->getRepository(Action::class);
+        $this->em               = $em;
+        $this->mailer           = $mailer;
+        $this->fhSrv            = new FinnhubService();
+        $this->actionRepo       = $this->em->getRepository(Action::class);
+        $this->alerteModeleRepo = $this->em->getRepository(AlerteModele::class);
     }
 
     public function setAction(Action $action)
@@ -41,7 +48,7 @@ class ActionService
      * @return Action|null
      * @throws \Exception
      */
-    public function getProfile(Action $action):? Action
+    public function getProfile(Action $action): ?Action
     {
 //        $action = new Stock();
 //        $action->setIsin($isin);
@@ -75,7 +82,7 @@ class ActionService
 
     public function getCote(Action $action)
     {
-        $res   = $this->fhSrv->getQuote($action->getTicker());
+        $res  = $this->fhSrv->getQuote($action->getTicker());
         $cote = new Cote();
         $cote->setPrix($res->c);
         $cote->setPrixMax($res->h);
@@ -127,7 +134,7 @@ class ActionService
      * @return Position|null
      * @throws NonUniqueResultException
      */
-    public function getActionPosition():? Position
+    public function getActionPosition(): ?Position
     {
         $query = $this->em->createQuery('
             SELECT p
@@ -136,5 +143,13 @@ class ActionService
         ')->setParameter('action', $this->action);
         return $query->getOneOrNullResult();
 
+    }
+
+    /**
+     * @return AlerteModele[]
+     */
+    public function getAllAlerteModeles(): array
+    {
+        return $this->alerteModeleRepo->findAll();
     }
 }

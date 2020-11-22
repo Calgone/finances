@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201019193024 extends AbstractMigration
+final class Version20201122205340 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,8 @@ final class Version20201019193024 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE action (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, isin VARCHAR(12) NOT NULL, ticker VARCHAR(12) NOT NULL, logo VARCHAR(255) DEFAULT NULL, ipo DATE NOT NULL, capitalisation NUMERIC(18, 4) NOT NULL, actions_en_circulation INT NOT NULL, web_url VARCHAR(255) DEFAULT NULL, tel VARCHAR(20) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE agence (id INT AUTO_INCREMENT NOT NULL, adresse VARCHAR(255) NOT NULL, cp VARCHAR(5) NOT NULL, ville VARCHAR(100) NOT NULL, nom VARCHAR(100) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE alerte (id INT AUTO_INCREMENT NOT NULL, cree_le DATETIME NOT NULL, date_debut DATE NOT NULL, date_fin DATE NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE alerte (id INT AUTO_INCREMENT NOT NULL, alerte_modele_id INT NOT NULL, action_id INT NOT NULL, cree_le DATETIME NOT NULL, date_debut DATE NOT NULL, date_fin DATE NOT NULL, methode VARCHAR(50) NOT NULL, seuil_bas NUMERIC(10, 2) NOT NULL, seuil_haut NUMERIC(10, 2) NOT NULL, referentiel VARCHAR(50) DEFAULT NULL, INDEX IDX_3AE753AAA426D5F (alerte_modele_id), INDEX IDX_3AE753A9D32F035 (action_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE alerte_modele (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE banque (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, pays VARCHAR(100) NOT NULL, adresse VARCHAR(255) DEFAULT NULL, cp VARCHAR(5) DEFAULT NULL, ville VARCHAR(200) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE bien (id INT AUTO_INCREMENT NOT NULL, bien_type SMALLINT NOT NULL, adresse VARCHAR(255) NOT NULL, cp VARCHAR(5) NOT NULL, ville VARCHAR(100) NOT NULL, an_construction SMALLINT DEFAULT NULL, an_achat SMALLINT DEFAULT NULL, date_mise_vente DATETIME DEFAULT NULL, proprio_nom VARCHAR(50) DEFAULT NULL, proprio_age SMALLINT DEFAULT NULL, vente_motif VARCHAR(255) DEFAULT NULL, cree_le DATETIME NOT NULL, vendu_le DATE DEFAULT NULL, prix_net_vendeur NUMERIC(12, 2) DEFAULT NULL, frais_agence NUMERIC(12, 2) DEFAULT NULL, titre VARCHAR(100) DEFAULT NULL, description LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE compte (id INT AUTO_INCREMENT NOT NULL, banque_id INT NOT NULL, numero VARCHAR(255) NOT NULL, cree_le DATETIME NOT NULL, ouvert_le DATE NOT NULL, ferme_le DATE DEFAULT NULL, solde NUMERIC(19, 4) NOT NULL, INDEX IDX_CFF6526037E080D9 (banque_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -34,6 +35,8 @@ final class Version20201019193024 extends AbstractMigration
         $this->addSql('CREATE TABLE position (id INT AUTO_INCREMENT NOT NULL, action_id INT NOT NULL, cree_le DATETIME NOT NULL, quantite INT NOT NULL, pru NUMERIC(10, 2) NOT NULL, UNIQUE INDEX UNIQ_462CE4F59D32F035 (action_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE projet (id INT AUTO_INCREMENT NOT NULL, bien_id INT NOT NULL, prix_net_vendeur NUMERIC(12, 2) NOT NULL, frais_agence NUMERIC(10, 2) NOT NULL, frais_notaire NUMERIC(10, 2) NOT NULL, travaux NUMERIC(10, 2) NOT NULL, meubles NUMERIC(10, 2) NOT NULL, apport NUMERIC(10, 2) NOT NULL, credit_frais_dossier NUMERIC(10, 2) NOT NULL, credit_garantie NUMERIC(10, 2) NOT NULL, credit_taux NUMERIC(5, 2) NOT NULL, credit_taux_assurance NUMERIC(5, 2) NOT NULL, credit_duree_mois SMALLINT NOT NULL, credit_date_debut DATETIME NOT NULL, loyer_cible_hc NUMERIC(10, 2) NOT NULL, taxe_fonciere NUMERIC(10, 2) NOT NULL, charge_non_recuperable NUMERIC(10, 2) NOT NULL, cout_assurance_bien NUMERIC(10, 2) NOT NULL, cout_travaux_entretien NUMERIC(10, 2) NOT NULL, cout_comptable NUMERIC(10, 2) NOT NULL, cout_gestion_locative NUMERIC(10, 2) NOT NULL, cout_autre NUMERIC(10, 2) NOT NULL, cree_le DATETIME NOT NULL, INDEX IDX_50159CA9BD95B80F (bien_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, first_name VARCHAR(50) DEFAULT NULL, last_name VARCHAR(50) DEFAULT NULL, created_at DATETIME NOT NULL, birth_date DATE DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE alerte ADD CONSTRAINT FK_3AE753AAA426D5F FOREIGN KEY (alerte_modele_id) REFERENCES alerte_modele (id)');
+        $this->addSql('ALTER TABLE alerte ADD CONSTRAINT FK_3AE753A9D32F035 FOREIGN KEY (action_id) REFERENCES action (id)');
         $this->addSql('ALTER TABLE compte ADD CONSTRAINT FK_CFF6526037E080D9 FOREIGN KEY (banque_id) REFERENCES banque (id)');
         $this->addSql('ALTER TABLE cote ADD CONSTRAINT FK_3DD722C99D32F035 FOREIGN KEY (action_id) REFERENCES action (id)');
         $this->addSql('ALTER TABLE lot ADD CONSTRAINT FK_B81291BBD95B80F FOREIGN KEY (bien_id) REFERENCES bien (id)');
@@ -45,15 +48,18 @@ final class Version20201019193024 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE alerte DROP FOREIGN KEY FK_3AE753A9D32F035');
         $this->addSql('ALTER TABLE cote DROP FOREIGN KEY FK_3DD722C99D32F035');
         $this->addSql('ALTER TABLE `ordre` DROP FOREIGN KEY FK_737992C99D32F035');
         $this->addSql('ALTER TABLE position DROP FOREIGN KEY FK_462CE4F59D32F035');
+        $this->addSql('ALTER TABLE alerte DROP FOREIGN KEY FK_3AE753AAA426D5F');
         $this->addSql('ALTER TABLE compte DROP FOREIGN KEY FK_CFF6526037E080D9');
         $this->addSql('ALTER TABLE lot DROP FOREIGN KEY FK_B81291BBD95B80F');
         $this->addSql('ALTER TABLE projet DROP FOREIGN KEY FK_50159CA9BD95B80F');
         $this->addSql('DROP TABLE action');
         $this->addSql('DROP TABLE agence');
         $this->addSql('DROP TABLE alerte');
+        $this->addSql('DROP TABLE alerte_modele');
         $this->addSql('DROP TABLE banque');
         $this->addSql('DROP TABLE bien');
         $this->addSql('DROP TABLE compte');

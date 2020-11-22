@@ -74,10 +74,16 @@ class Action // == stock
      */
     private $ordres;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Alerte::class, mappedBy="action")
+     */
+    private $alertes;
+
     public function __construct()
     {
         $this->cotes  = new ArrayCollection();
         $this->ordres = new ArrayCollection();
+        $this->alertes = new ArrayCollection();
     } // == symbol
 
     public function getId(): ?int
@@ -255,6 +261,36 @@ class Action // == stock
             // set the owning side to null (unless already changed)
             if ($order->getAction() === $this) {
                 $order->setAction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Alerte[]
+     */
+    public function getAlertes(): Collection
+    {
+        return $this->alertes;
+    }
+
+    public function addAlerte(Alerte $alerte): self
+    {
+        if (!$this->alertes->contains($alerte)) {
+            $this->alertes[] = $alerte;
+            $alerte->setAction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlerte(Alerte $alerte): self
+    {
+        if ($this->alertes->removeElement($alerte)) {
+            // set the owning side to null (unless already changed)
+            if ($alerte->getAction() === $this) {
+                $alerte->setAction(null);
             }
         }
 
