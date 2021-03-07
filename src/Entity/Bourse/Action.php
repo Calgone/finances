@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=ActionRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Action // == stock
 {
@@ -25,7 +27,7 @@ class Action // == stock
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=12)
+     * @ORM\Column(type="string", length=12, unique=true)
      */
     private $isin;
 
@@ -78,6 +80,34 @@ class Action // == stock
      * @ORM\OneToMany(targetEntity=Alerte::class, mappedBy="action")
      */
     private $alertes;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creeLe;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $majLe;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist()
+    {
+        $this->creeLe = new \DateTime("now");
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpdate()
+    {
+        $this->majLe = new \DateTime("now");
+    }
 
     public function __construct()
     {
@@ -293,6 +323,30 @@ class Action // == stock
                 $alerte->setAction(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreeLe(): ?\DateTimeInterface
+    {
+        return $this->creeLe;
+    }
+
+    public function setCreeLe(\DateTimeInterface $creeLe): self
+    {
+        $this->creeLe = $creeLe;
+
+        return $this;
+    }
+
+    public function getMajLe(): ?\DateTimeInterface
+    {
+        return $this->majLe;
+    }
+
+    public function setMajLe(?\DateTimeInterface $majLe): self
+    {
+        $this->majLe = $majLe;
 
         return $this;
     }

@@ -61,9 +61,8 @@ class BourseController extends AbstractController
      * @Route("/position/list", name="position.list")
      * @param Request $request
      * @return JsonResponse
-     * @throws ExceptionInterface
      */
-    public function positionList(Request $request)
+    public function positionList(Request $request): JsonResponse
     {
         // Get the parameters from Datatable Ajax call
 //        if ($request->getMethod() === 'POST') {
@@ -104,7 +103,7 @@ class BourseController extends AbstractController
 
             $responseData[$i]['name']               = $href;
             $responseData[$i]['volume']             = $position->getVolume();
-            $responseData[$i]['pru']           = $fmt->formatCurrency($position->getUnitCost(), "EUR");
+            $responseData[$i]['pru']                = $fmt->formatCurrency($position->getUnitCost(), "EUR");
             $responseData[$i]['quote']              = $fmt->formatCurrency($currentPrice, "EUR");
             $responseData[$i]['amount']             = $fmt->formatCurrency($currentAmount, "EUR");
             $responseData[$i]['capitalGain']        = $fmt->formatCurrency($capitalGain, "EUR");

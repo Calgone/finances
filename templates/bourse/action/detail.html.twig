@@ -145,7 +145,7 @@
             $('.action-alerte').click(function () {
                 // let userid = $(this).data('id');
                 $.ajax({
-                    url: '{{ path('action.alert-form', {id: action.id}) }}',
+                    url: '{{ path('action.get-alert-form', {id: action.id}) }}',
                     type: 'post',
                     data: {stockId: {{ action.id }}},
                     success: function (response) {

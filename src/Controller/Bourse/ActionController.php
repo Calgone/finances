@@ -46,7 +46,7 @@ class ActionController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function actionDetail(Request $request)
+    public function actionDetail(Request $request): Response
     {
         $id    = $request->get('id');
         $action = $this->actionSrv->getActionCote($id);
@@ -69,7 +69,7 @@ class ActionController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function actionJson(Request $request, Action $action)
+    public function actionJson(Request $request, Action $action): Response
     {
 //        $actionSrv = new StockService($this->em);
 
@@ -98,13 +98,17 @@ class ActionController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function actionSearch(Request $request)
+    public function actionSearch(Request $request): Response
     {
+        // todo: rechercher si l'isin (unique) n'existe pas déjà et si oui charger l'entité
+        // todo: déplacer ce code dans le service
         $isin = trim($request->request->get('action_search'));
 //        dd($isin);
-        $action = new Action();
-        $action->setIsin($isin);
-        $action        = $this->actionSrv->getProfile($action);
+
+//        $action = new Action();
+//        $action->setIsin($isin);
+//        $action        = $this->actionSrv->getProfile($action);
+        $action = $this->actionSrv->findActionFromISIN($isin);
         $response     = ['message' => 'ok', 'data' => $action];
         $serializer   = $this->get('serializer');
         $responseJson = $serializer->serialize($response, 'json',
@@ -124,7 +128,7 @@ class ActionController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function stockLocalSearch(Request $request)
+    public function stockLocalSearch(Request $request): JsonResponse
     {
         $term = trim($request->request->get('term'));
 //        dd($request->request->get('phrase'));
@@ -144,9 +148,9 @@ class ActionController extends AbstractController
 
     /**
      * Renvoie le template du formulaire pour créer une alerte
-     * @Route("/action/alert-form", name="action.alert-form")
+     * @Route("/action/get-alert-form", name="action.get-alert-form")
      */
-    public function actionAlerteForm()
+    public function actionGetAlertForm(): Response
     {
         $alerteModeles = $this->actionSrv->getAllAlerteModeles();
 
@@ -156,4 +160,12 @@ class ActionController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/action/submit-alert-form", name="action.submit-alert-form")
+     * @param Request $request
+     */
+    public function actionSubmitAlertForm(Request $request)
+    {
+        dd($request);
+    }
 }

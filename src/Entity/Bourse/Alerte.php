@@ -64,6 +64,16 @@ class Alerte
      */
     private $referentiel;
 
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $variation;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $intervalle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -176,4 +186,53 @@ class Alerte
 
         return $this;
     }
+
+    public function getFreqType(): ?string
+    {
+        return $this->freqType;
+    }
+
+    public function setFreqType(string $freqType): self
+    {
+        $this->freqType = $freqType;
+
+        return $this;
+    }
+
+    public function getFreqVal(): ?int
+    {
+        return $this->freqVal;
+    }
+
+    public function setFreqVal(int $freqVal): self
+    {
+        $this->freqVal = $freqVal;
+
+        return $this;
+    }
+
+    public function getVariation(): ?string
+    {
+        return $this->variation;
+    }
+
+    public function setVariation(?string $variation): self
+    {
+        $this->variation = $variation;
+
+        return $this;
+    }
+
+    public function getIntervalle(): ?string
+    {
+        return $this->intervalle;
+    }
+
+    public function setIntervalle(string $intervalle): self
+    {
+        $this->intervalle = $intervalle;
+
+        return $this;
+    }
+
 }

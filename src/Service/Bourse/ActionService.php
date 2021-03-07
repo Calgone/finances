@@ -89,7 +89,7 @@ class ActionService
         $cote->setPrixMin($res->l);
         $cote->setPrixOuverture($res->o);
         $cote->setPrixClotureVeille($res->pc);
-        $cote->setCreeLe((new \DateTime)->setTimestamp($res->t));
+//        $cote->setCreeLe((new \DateTime)->setTimestamp($res->t));
         $cote->setAction($action);
         $this->em->persist($cote);
         $this->em->flush();
@@ -151,5 +151,26 @@ class ActionService
     public function getAllAlerteModeles(): array
     {
         return $this->alerteModeleRepo->findAll();
+    }
+
+    /**
+     * @param string $isin
+     * @return Action|null
+     * @throws \Exception
+     */
+    public function findActionFromISIN(string $isin): ?Action
+    {
+        // on cherche si on a déjà l'action en local
+        $action = $this->actionRepo->findOneBy(['isin' => $isin]);
+        if (!$action) {
+            $action = new Action();
+            $action->setIsin($isin);
+        }
+        if ($action) {
+            $this->action = $this->getProfile($action);;
+            return $this->action;
+        } else {
+            return null;
+        }
     }
 }

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=QuoteRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Cote
 {
@@ -52,6 +53,15 @@ class Cote
      * @ORM\Column(type="datetime")
      */
     private $creeLe;
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist()
+    {
+        $this->creeLe = new \DateTime("now");
+    }
 
     public function getId(): ?int
     {

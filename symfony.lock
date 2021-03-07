@@ -407,6 +407,9 @@
     "symfony/property-info": {
         "version": "v5.0.1"
     },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.2.1"
+    },
     "symfony/routing": {
         "version": "5.1",
         "recipe": {
@@ -568,9 +571,6 @@
     },
     "twig/twig": {
         "version": "v3.0.0"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.6.0"

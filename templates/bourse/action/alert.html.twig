@@ -1,48 +1,186 @@
 <div id="alert-form-1">
     <h3>Sélectionnez le type d'alerte</h3>
-    {% for modele in alerteModeles %}
-        <div class="form-check">
-            <input type="radio" class="form-check-input" name="alerteModele" id="alerteModele{{ modele.id }}">
-            <label for="alerteModele{{ modele.id }}" class="form-chek">
-                {{ modele.titre }}
-            </label>
-        </div>
-
-    {% endfor %}
+    <ul class="list-group">
+        {% for modele in alerteModeles %}
+            <li class="list-group-item list-group-item-action list-group-item-info">
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="alerteModele" id="alerteModele{{ modele.id }}"
+                           value="{{ modele.id }}" role="button">
+                    <label for="alerteModele{{ modele.id }}" class="form-chek" role="button">
+                        {{ modele.titre }}
+                    </label>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 
 <div id="alert-form-2" class="collapse">
-    <form action="">
+    <div id="alerte-modele"></div>
+    <form action="" method="post">
         <input type="hidden" name="alerteModele" id="alerteModele">
-        <div class="form-group">
+        <div class="form-group" id="div-seuilBas">
             <label for="seuilBas">Seuil bas</label>
-            <input type="text" name="seuilBas" id="seuilBas" class="form-control">
+            <input type="number" name="seuilBas" id="seuilBas" class="form-control">
+        </div>
+        <div class="form-group" id="div-seuilHaut">
             <label for="seuilHaut">Seuil haut</label>
-            <input type="text" name="seuilHaut" id="seuilHaut" class="form-control">
+            <input type="number" name="seuilHaut" id="seuilHaut" class="form-control">
+        </div>
+        <div class="form-group" id="div-variation">
+            <label for="variation">Variation (%)</label>
+            <input type="number" name="variation" id="variation" class="form-control" min="-1000" max="1000" step="1">
         </div>
         <div class="form-group">
+            <label for="methode">Méthode</label>
             <select name="methode" id="methode" class="form-control">
                 <option value="hausse">Hausse</option>
                 <option value="baisse">Baisse</option>
-                <option value="pourcentage">Pourcentage</option>
+                <option value="variation">Variation</option>
                 <option value="bornes">Bornes</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="referentiel">Référentiel</label>
+        <div class="form-group" id="div-referentiel">
+            <label for="referentiel">
+                Référentiel
+            </label>
+            <a href="https://www.php.net/manual/fr/datetime.formats.relative.php" target="_blank">aide</a>
             <input type="text" id="referentiel" name="referentiel" class="form-control">
         </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="freqVal">Tous les</label>
+                <input name="freqVal" id="freqVal" type="number" min="1" max="200" step="1" class="form-control">
+            </div>
+            <div class="form-group col-md-8">
+                <label for="freqType">Fréquence</label>
+                <select id="freqType" name="freqType" class="form-control">
+                    <option value="minute">Minute</option>
+                    <option value="heure">Heure</option>
+                    <option value="jour">Jour</option>
+                    <option value="semaine">Semaine</option>
+                    <option value="mois">Mois</option>
+                    <option value="trimestre">Trimestre</option>
+                    <option value="semestre">Semestre</option>
+                    <option value="an">Année</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <button class="btn btn-light" id="bt-alert-back">Retour</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary" type="submit">Valider</button>
+            </div>
+        </div>
     </form>
+
 </div>
 <script type="text/javascript">
     $(function () {
-        $('#alert-form-1').collapse();
+        $('#alert-form-1').collapse(); // Rendre la 1ère div collapsable
         $('input[name="alerteModele"]').click(function () {
+            // ajout du modèle dans le form
             $('#alerteModele').val($(this).val());
+            // affichage du titre du modèle choisi
+            $('#alerte-modele').html($('label[for="' + this.id + '"]').html());
+            // console.log($(this).val());
+            $('#div-seuilBas').show();
+            $('#div-seuilHaut').show();
+            $('#div-variation').show();
+            $('#div-referentiel').show();
+
+            switch (parseInt($(this).val())) {
+                case 1: // cours franchit un seuil
+                    $('#div-variation').hide();
+                    $('#div-referentiel').hide();
+                    break;
+                case 2: // variation en % du cours
+                    $('#div-seuilBas, #div-seuilHaut').each(function () {
+                        $(this).hide();
+                    });
+                    break;
+                case 3: // cours sort d'un tunnel
+                    $('#div-variation').hide();
+                    $('#div-referentiel').hide();
+                    break;
+                case 4: // volume du jour supérieur de x % à une moyenne
+                    break;
+                case 5: // cours croise sa moyenne mobile
+                    $('#div-seuilBas, #div-seuilHaut, #div-variation').each(function () {
+                        $(this).hide();
+                    });
+                    break;
+                case 6: // cours franchit plus haut ou plus bas
+
+                    break;
+            }
+            $('#methode').change();
             // $('#alert-form-1').addClass('d-none');
             // $('#alert-form-2').removeClass('d-none');
             $('#alert-form-1').collapse('hide');
             $('#alert-form-2').collapse('show');
         });
+        $('#bt-alert-back').click(function () {
+            $('#alert-form-2').collapse('hide');
+            $('#alert-form-1').collapse('show');
+        });
+        $('#methode').change(function () {
+            switch ($(this).val()) {
+                case 'hausse':
+                    $('#div-seuilHaut').show(),
+                        $('#seuilHaut').prop('required', true);
+                    $('#div-seuilBas').hide();
+                    $('#div-variation').hide();
+                    break;
+                case 'baisse':
+                    $('#div-seuilHaut').hide();
+                    $('#div-seuilBas').show();
+                    $('#seuilBas').prop('required', true);
+                    $('#div-variation').hide();
+                    break;
+                case 'variation':
+                    $('#div-seuilHaut').hide();
+                    $('#div-seuilBas').hide();
+                    $('#div-variation').show();
+                    $('#variation').prop('required', true);
+                    break;
+                case 'bornes':
+                    $('#div-seuilHaut').show();
+                    $('#seuilHaut').prop('required', true);
+                    $('#div-seuilBas').show();
+                    $('#seuilBas').prop('required', true);
+                    $('#div-variation').hide();
+                    break;
+            }
+        });
+        $('#alert-form-2').submit(function (e) {
+            e.preventDefault();
+            let d = $(this).serialize();
+            $.ajax({
+                type: 'post',
+                url: '{{ path('action.submit-alert-form') }}',
+                data: d,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        });
     });
+
+    function changeOption() {
+        let opts = {
+            "hausse": "Hausse",
+            "baisse": "Baisse",
+            "variation": "Variation",
+            "bornes": "Bornes"
+        };
+
+        let $el = $('#methode');
+        $.each(opts, function (key, value) {
+            $el.append($("<option></option>")
+                .attr("value", value).text(key));
+        });
+    }
 </script>
