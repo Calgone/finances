@@ -38,7 +38,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.0",
-            "ref": "368794356c1fb634e58b38ad2addb36933f2e73e"
+            "ref": "40631978d2c4adc9b11220b13eba539b727c36a8"
         },
         "files": [
             "./config/packages/doctrine.yaml",
@@ -256,12 +256,12 @@
         "version": "v5.0.1"
     },
     "symfony/framework-bundle": {
-        "version": "5.1",
+        "version": "5.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "5.1",
-            "ref": "5f0d0fd82ffa3580fe0ce8e3b2d18506ebf37a0e"
+            "version": "5.2",
+            "ref": "6ec87563dcc85cd0c48856dcfbfc29610506d250"
         },
         "files": [
             "./config/packages/cache.yaml",
@@ -360,12 +360,12 @@
         "version": "v1.0.7"
     },
     "symfony/phpunit-bridge": {
-        "version": "4.3",
+        "version": "5.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "4.3",
-            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
+            "version": "5.1",
+            "ref": "bf16921ef8309a81d9f046e9b6369c46bcbd031f"
         },
         "files": [
             "./.env.test",
@@ -539,16 +539,19 @@
         ]
     },
     "symfony/webpack-encore-bundle": {
-        "version": "1.6",
+        "version": "1.9",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "1.6",
-            "ref": "69e1d805ad95964088bd510c05995e87dc391564"
+            "version": "1.9",
+            "ref": "9399a0bfc6ee7a0c019f952bca46d6a6045dd451"
         },
         "files": [
-            "./assets/css/app.css",
-            "./assets/js/app.js",
+            "./assets/app.js",
+            "./assets/bootstrap.js",
+            "./assets/controllers.json",
+            "./assets/controllers/hello_controller.js",
+            "./assets/styles/app.css",
             "./config/packages/assets.yaml",
             "./config/packages/prod/webpack_encore.yaml",
             "./config/packages/test/webpack_encore.yaml",
