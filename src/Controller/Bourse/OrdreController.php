@@ -5,7 +5,7 @@ namespace App\Controller\Bourse;
 use App\Entity\Bourse\Ordre;
 use App\Entity\Bourse\Position;
 use App\Entity\Bourse\Action;
-use App\Form\Bourse\OrderType;
+use App\Form\Bourse\OrdreType;
 use App\Service\DataTablesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,19 +72,19 @@ class OrdreController extends AbstractController
      */
     public function new(Request $request, Action $action)
     {
-        $order = new Ordre();
-        $order->setAction($action);
-        $form = $this->createForm(OrderType::class, $order);
+        $ordre = new Ordre();
+        $ordre->setAction($action);
+        $form = $this->createForm(OrdreType::class, $ordre);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Enregistrer la position. Si achat: création, si vente: suppression
 
-            if ($order->getDirection() === 'buy') {
+            if ($ordre->getDirection() === 'buy') {
                 $position = new Position();
                 $position->setAction($action);
-                $position->setCreatedAt(new \DateTime());
-                $position->setPru($order->getCours());
-                $position->setQuantite($order->getQuantite());
+                $position->setCreeLe(new \DateTime());
+                $position->setPru($ordre->getCours());
+                $position->setQuantite($ordre->getQuantite());
                 $this->em->persist($position);
             } else { // 'sell'
                 $positionRepo = $this->em->getRepository(Position::class);
@@ -92,7 +92,7 @@ class OrdreController extends AbstractController
                 $this->em->remove($position);
             }
 
-            $this->em->persist($order);
+            $this->em->persist($ordre);
             $this->em->flush();
             $this->addFlash('success',"L'ordre est enregistré.");
             return $this->redirectToRoute('bourse.index');
@@ -100,7 +100,7 @@ class OrdreController extends AbstractController
 
         return $this->render('bourse/ordre/new.html.twig', [
             'form' => $form->createView(),
-            'order' => $order // utilisé pour afficher les données hors du form
+            'ordre' => $ordre // utilisé pour afficher les données hors du form
         ]);
     }
 }

@@ -17,15 +17,15 @@
 
 <div id="alert-form-2" class="collapse">
     <div id="alerte-modele"></div>
-    <form action="" method="post">
+    <form id="form-alert" action="" method="post">
         <input type="hidden" name="alerteModele" id="alerteModele">
         <div class="form-group" id="div-seuilBas">
             <label for="seuilBas">Seuil bas</label>
-            <input type="number" name="seuilBas" id="seuilBas" class="form-control">
+            <input type="number" step="any" name="seuilBas" id="seuilBas" class="form-control">
         </div>
         <div class="form-group" id="div-seuilHaut">
             <label for="seuilHaut">Seuil haut</label>
-            <input type="number" name="seuilHaut" id="seuilHaut" class="form-control">
+            <input type="number" step="any" name="seuilHaut" id="seuilHaut" class="form-control">
         </div>
         <div class="form-group" id="div-variation">
             <label for="variation">Variation (%)</label>
@@ -129,8 +129,8 @@
         $('#methode').change(function () {
             switch ($(this).val()) {
                 case 'hausse':
-                    $('#div-seuilHaut').show(),
-                        $('#seuilHaut').prop('required', true);
+                    $('#div-seuilHaut').show();
+                    $('#seuilHaut').prop('required', true);
                     $('#div-seuilBas').hide();
                     $('#div-variation').hide();
                     break;
@@ -155,7 +155,7 @@
                     break;
             }
         });
-        $('#alert-form-2').submit(function (e) {
+        $('#form-alert').submit(function (e) {
             e.preventDefault();
             let d = $(this).serialize();
             $.ajax({

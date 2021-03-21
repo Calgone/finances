@@ -35,7 +35,7 @@
             </div>
             <button type="submit" class="btn btn-info">Rechercher la valeur</button>
         </form>
-
+        <div id="div_res_search"></div>
 {#        <a href="{{ path('order.new') }}" class="btn btn-secondary">Nouvel ordre</a>#}
 
         <div id="calendar-holder" class="mt-2" data-events-url="{#{{ path('fc_load_events') }}#}"></div>
@@ -61,7 +61,8 @@
                     type: 'post',
                     data: data,
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
+                        $('#div_res_search').html(response);
                     }
                 })
             });

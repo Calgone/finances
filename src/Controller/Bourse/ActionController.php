@@ -3,6 +3,10 @@
 namespace App\Controller\Bourse;
 
 use App\Entity\Bourse\Action;
+use App\Entity\Bourse\Alerte;
+use App\Entity\Bourse\AlerteModele;
+use App\Form\Bourse\AlerteType;
+use App\Repository\Bourse\AlerteModeleRepository;
 use App\Service\Bourse\ActionService;
 use App\Service\FinnhubService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,9 +52,8 @@ class ActionController extends AbstractController
      */
     public function actionDetail(Request $request): Response
     {
-        $id    = $request->get('id');
+        $id     = $request->get('id');
         $action = $this->actionSrv->getActionCote($id);
-//        dd($action);
         $this->actionSrv->setAction($action);
 //        $stockOrderHistory = $this->actionSrv->getStockOrderHistory();
         $actionPosition = $this->actionSrv->getActionPosition();
@@ -80,7 +83,7 @@ class ActionController extends AbstractController
 //        $this->em->persist($action);
 //        $this->em->flush();
         $serializer = $this->get('serializer');
-        $actionJson  = $serializer->serialize($response, 'json',
+        $actionJson = $serializer->serialize($response, 'json',
             [
                 'circular_reference_handler' => function ($object) {
                     return $object->getId();
@@ -100,26 +103,26 @@ class ActionController extends AbstractController
      */
     public function actionSearch(Request $request): Response
     {
-        // todo: rechercher si l'isin (unique) n'existe pas déjà et si oui charger l'entité
-        // todo: déplacer ce code dans le service
-        $isin = trim($request->request->get('action_search'));
-//        dd($isin);
-
-//        $action = new Action();
-//        $action->setIsin($isin);
-//        $action        = $this->actionSrv->getProfile($action);
+        $isin   = trim($request->request->get('action_search'));
         $action = $this->actionSrv->findActionFromISIN($isin);
-        $response     = ['message' => 'ok', 'data' => $action];
-        $serializer   = $this->get('serializer');
-        $responseJson = $serializer->serialize($response, 'json',
-            [
-                'circular_reference_handler' => function ($object) {
-                    return $object->getId();
-                }
-            ]);
-        return new Response($responseJson, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        if (!$action) {
+            $response = "Aucune action trouvée pour l'isin " . $isin;
+        } else {
+            $url  = $this->generateUrl('action.detail', ['id' => $action->getId()]);
+            $response = '<a href="' . $url . '">' . $action->getNom() . '</a>';
+        }
+//        $response     = ['message' => 'ok', 'data' => $action];
+//        $serializer   = $this->get('serializer');
+//        $responseJson = $serializer->serialize($response, 'json',
+//            [
+//                'circular_reference_handler' => function ($object) {
+//                    return $object->getId();
+//                }
+//            ]);
+//        return new Response($responseJson, 200, [
+//            'Content-Type' => 'application/json'
+//        ]);
+        return new Response($response, 200);
     }
 
     /**
@@ -138,7 +141,7 @@ class ActionController extends AbstractController
         $i        = 0;
         $response = [];
         foreach ($result as $k => $v) {
-            $response[$i]['id']   = $v->getId();
+            $response[$i]['id']  = $v->getId();
             $response[$i]['nom'] = $v->getNom();
         }
 
@@ -146,6 +149,27 @@ class ActionController extends AbstractController
         return new JsonResponse($response, 200);
     }
 
+    // Utilisation des forms Symfony pour les alertes
+
+    /**
+     * @Route("/action/{id}/alerte/new", name="action.alerte.new")
+     * @param Request $request
+     * @param Action $action
+     */
+    public function newAlerte(Request $request, Action $action)
+    {
+        $alerte = new Alerte();
+        $alerte->setAction($action);
+        $form = $this->createForm(AlerteType::class, $alerte);
+
+        return $this->render('bourse/action/alerte/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
+    // Ci-dessous façon d'origine
     /**
      * Renvoie le template du formulaire pour créer une alerte
      * @Route("/action/get-alert-form", name="action.get-alert-form")
@@ -156,16 +180,36 @@ class ActionController extends AbstractController
 
         return $this->render('bourse/action/alert.html.twig', [
             'controller_name' => 'ActionController',
-            'alerteModeles' => $alerteModeles,
+            'alerteModeles'   => $alerteModeles,
         ]);
     }
 
     /**
      * @Route("/action/submit-alert-form", name="action.submit-alert-form")
      * @param Request $request
+     * @return Response
      */
-    public function actionSubmitAlertForm(Request $request)
+    public function actionSubmitAlertForm(Request $request): Response
     {
-        dd($request);
+//        dd($request->request->get('alerteModele'));
+        $alerteModele = (new AlerteModeleRepository())->findOne($request->request->get('alerteModele'));
+//        $alerteModele = $request->request->get('alerteModele');
+        $seuilBas = $request->request->get('seuilBas');
+        $seuilHaut = $request->request->get('seuilHaut');
+        $variation = $request->request->get('variation');
+        $methode = $request->request->get('methode');
+        $referentiel = $request->request->get('referentiel');
+        $freqVal = $request->request->get('freqVal');
+        $freqType = $request->request->get('freqType');
+        $alert = new Alerte();
+        $alert->setAlerteModele($alerteModele)
+            ->setSeuilBas($seuilBas)
+            ->setSeuilHaut($seuilHaut)
+            ->setVariation($variation)
+            ->setMethode($methode)
+            ->setReferentiel($referentiel)
+            ->setFreqVal($freqVal)
+            ->setFreqType($freqType);
+        return new Response('ok', 200);
     }
 }

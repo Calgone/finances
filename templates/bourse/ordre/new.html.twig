@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container mt-4">
-        <h1>Passer un ordre sur la valeur {{ order.stock.name }}</h1>
+        <h1>Passer un ordre sur la valeur {{ order.action.nom }}</h1>
         {{ include('bourse/ordre/_form.html.twig', {form: form, button: 'Éditer'}) }}
     </div>
 
